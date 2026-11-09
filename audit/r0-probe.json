@@ -1,0 +1,22 @@
+{
+  "consoleErrors": [],
+  "consoleWarnings": [],
+  "pageErrors": [],
+  "widths": {
+    "375": {
+      "sw": 375,
+      "cw": 375,
+      "overflowX": false
+    },
+    "768": {
+      "sw": 768,
+      "cw": 768,
+      "overflowX": false
+    },
+    "1440": {
+      "sw": 1440,
+      "cw": 1440,
+      "overflowX": false
+    }
+  }
+}
