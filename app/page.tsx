@@ -132,7 +132,7 @@ export default function Page() {
             </p>
             <Link
               href="/contact"
-              className="mt-10 inline-flex items-center justify-center h-12 w-32 rounded-full border border-accent/40 bg-accent/5 px-6 text-accent text-xs font-medium uppercase tracking-widest transition-all hover:bg-accent hover:text-background cursor"
+              className="mt-10 inline-flex items-center justify-center h-12 rounded-full border border-accent/40 bg-accent/5 px-6 whitespace-nowrap text-accent text-xs font-medium uppercase tracking-widest transition-all hover:bg-accent hover:text-background cursor"
             >
               Begin a project
             </Link>

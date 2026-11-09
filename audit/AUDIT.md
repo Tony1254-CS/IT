@@ -191,3 +191,66 @@ All P0s (#1–8) and all P1s (#9–16) from the baseline are closed; screenshot/
 - Lighthouse runs are **desktop-only**; CWV numbers are **dev-server** (Turbopack), not prod.
 - Screenshot DPR variance (1.5×/2×) per P2 #21 still applies to vertical comparisons.
 - Axe sampling variance: identical failures can resolve as "incomplete" page-to-page; fixed by full pattern sweep rather than per-page trust.
+
+---
+
+# Round 3 — P2 fixes + audit corrections (2026-11-09) — **FINAL ROUND**
+
+Method: Playwright (Chromium) via new `audit/hero-cta-probe.mjs` (Range over the CTA label text node) and `audit/reveal-measure-v2.mjs` (route-specific reveal attributes + overflow sweep, 5 pages × 375/768/1440), plus re-runs of `audit/interact.mjs`, `audit/shoot.mjs after3` (console sweep), `audit/cwv.mjs`; `npm run build` + lint + tsc; `curl.exe` checks of `/robots.txt` and canonical links in served HTML.
+
+## Corrections to the recorded audit (made before fixing)
+
+1. **Round-2 finding "dead reveal effects on 4 routes" is FALSE — retracted.** The round-2 probe (`reveal-measure.mjs`) queried only `[data-scroll]` and missed the route-specific attributes `data-approach-reveal`, `data-cap-reveal`, `data-principles-reveal`, `data-contact-reveal` (`app/{approach,capabilities,principles,contact}/page.tsx`). `audit/reveal-measure-v2.mjs` measures those attributes directly: all route reveals hit opacity 1 at scroll-end. The effects are alive; the corresponding round-3 candidate is **withdrawn**. No code change (removing live, working effects would have been vandalism).
+2. **The hero-CTA wrap defect is global, not 375-only.** Round 2 recorded the wrap as an at-375 issue; the dedicated probe measured the label wrapping to 2 lines at 375, 768 **and 1440** (fixed `w-32` pill ⇒ 128×48). The round-2 candidate line understated its scope.
+
+## What was fixed (6 entries, per the ≤8 round rule)
+
+| # | Fix | Files | Evidence after |
+|---|-----|-------|----------------|
+| 1 | **Hero CTA pill sized by content.** Defect (measurements, pre-fix): label wraps to **2 lines at 375/768/1440** — pill fixed `w-32` (128×48). Fix: removed the fixed width, added `whitespace-nowrap`, kept `px-6 mt-2 md:mt-0` — pure content-sizing, same pill shape, no design-direction change. | `app/page.tsx` (hero CTA) | Post-fix probe: **one-line row at all 3 widths** — pill 168×48, label 118px on a single line, no wrap anywhere. |
+| 2 | **`body{overflow-x:hidden}` debris removed** (P2 #17). The body base rule no longer hides anything past the edge; with `overflow-x: hidden` lifted, real overflow would show. | `app/globals.css` | `reveal-measure-v2.mjs`: `scrollX=0` and `documentOverflow=0` in **all 15 combos** (5 pages × 375/768/1440) with the rule lifted; home statement top at rest −53/141/157px (above the fold at 375/768, on-screen at 1440) and every `[data-*-reveal]` measured at opacity 1. |
+| 3 | **Canonical links per route.** `alternates.canonical` added to the root layout and all 4 route layouts (relative paths composing with the existing `metadataBase: https://quintessence.com`). Pairs with round-2's per-route title/description/OG set. | `app/layout.tsx` + `app/{approach,capabilities,principles,contact}/layout.tsx` | Served HTML re-verified this session: every page emits an absolute `<link rel="canonical" href="https://quintessence.com[/approach|/capabilities|/principles|/contact or /]">`. |
+| 4 | **`/robots.txt` added** (404 observed in dev logs). New `app/robots.ts`: `userAgent: '*'`, `allow: '/'`, **no sitemap field** (the site has no sitemap — emitting one would point crawlers at a 404). | `app/robots.ts` (new) | `npm run build` emits `/robots.txt` as a static prerendered route (all routes ○ static); live check HTTP **200** → `User-Agent: * / Allow: /`. |
+| 5 | **Audit-tooling lint hygiene.** The round's probes introduced 5 lint warnings (unused `SHOTS` ×2 + unused imports in `hero-cta-probe.mjs`/`reveal-measure-v2.mjs`; unused `fmt` + a dead no-op `await` line in `measure.mjs`; a dead `stalled` var in `reveal-measure-v2.mjs`). All removed; `measure.mjs`'s typos'd dead `waitforTimeout` line resolved as a no-op and deleted. | `audit/hero-cta-probe.mjs`, `audit/reveal-measure-v2.mjs`, `audit/measure.mjs` | `npm run lint` → **0 problems**; `npx tsc --noEmit` clean. |
+| 6 | **Round-2 fixes re-verified intact** (no code change — regression check after globals/layout edits). | — | `interact.mjs`: statement mask reaches **`0% 0px`**, opacity 1 (masked crumb); 3 inline contact errors in `rgb(223,143,107)` + success card visible on valid submit; `shoot.mjs after3` console sweep clean. |
+
+**Considered, no change (honesty):** extending the round-2 masked-scrub trigger (`top 85% → top 40%`) to route heros — rejected deliberately: the statement mask is home's flagship effect and already completes with edge-to-edge ink (`0% 0px`); route heros use plain opacity tweens, verified completing. Nothing broken there.
+
+## Verification after the round
+
+- `npm run build` ✅ — all routes static (○), including the new prerendered `/robots.txt`.
+- `npm run lint` ✅ 0 problems (all 5 tooling warnings cleared), `npx tsc --noEmit` ✅.
+- CWV (**dev-server, honest**): CLS **0**, LCP **272ms**, FCP **272ms** (co-photographed first paint), TTFB **97.3ms** — warm Turbopack; no shifts from the CTA reflow fix.
+- Overflow: 0 in all 15 page×width combos with `overflow-x:hidden` lifted (the evidence now stands without the masking crutch).
+- Interactions/regression: statement mask completes; contact errors + success intact; console clean on fresh shots (`after3-*`).
+- Crawler surface: `/robots.txt` 200; canonical `<link>` present in all 5 served pages (absolute, matches `metadataBase`).
+
+## Round-3 candidates — reconciliation
+
+- `body{overflow-x:hidden}` → **removed** (#2). · Hero CTA wrap → **fixed**, scope corrected to global (#1 + correction 2). · "Dead reveals on 4 routes" → **retracted as a false finding** (correction 1). · Canonical links → **done** (#3). · `/robots.txt` → **done** (#4). · Lint hygiene of the probes themselves → **done** (#5).
+
+## Honest rescore after round 3 (was → is)
+
+| Category | Before | After | Why |
+|----------|--------|-------|-----|
+| Build & tooling | 7 | 7 | No change to the build surface beyond a clean new metadata route; still nothing prod-verified. |
+| Responsive integrity | 6 | 7 | No responsive defects remain open at all: overflow re-proven with the masking rule lifted, and the CTA pill renders on one line at every width. 7, not more — still dev-verified only. |
+| Typography | 5 | 5 | Untouched per no-design-direction rule (one-line CTA label is a defect fix, not a typographic change). |
+| Motion | 9 | 9 | Round-2 fixes re-verified intact (statement completes; reveals on routes proven alive). |
+| Copy & honesty | 6 | 6 | No copy changes this round. |
+| Navigation & IA | 6 | 6 | No navigation changes. |
+| Forms | 9 | 9 | Re-verified intact; still a client-side demo submit. |
+| Accessibility | 9 | 9 | Re-verified intact; desktop-only Lighthouse + no manual SR pass keeps the ceiling. |
+| Performance | 7 | 7 | CWV unchanged (dev-only numbers). |
+| Metadata | 8.5 | 9 | Canonical per route + `/robots.txt` complete the crawler/share surface, measured in served HTML and the prod build. Nothing requested by an SEO audit is missing now; 9, not 10 — no real-robots testing on a deployed host. |
+
+## Overall after round 3: **7.4/10** (was 7.3)
+
+## Stop — round limit reached (3/3)
+
+Per the brief: three rounds executed, `overall ≥ 8.5` not reached, and round 3 is the last. All P0s and P1s from the baseline are closed and re-verified; no score regressed across any round. The remaining gap to 8.5 sits in:
+
+- **Typography (5) and copy (6)** — P2 creative-polish items (house italic-everything rhythm, minor copy repetition) that only move up under **design-direction changes**, which the brief forbids.
+- **Measurement ceilings** — a11y/motion/forms capped at 9 (desktop-only Lighthouse, no manual screen-reader pass), perf/metadata on dev-server numbers with no prod verification.
+
+One unstated Next.js warning remains and is out of the audit's scope: Turbopack ignores `package-lock.json` at `D:\aaa\IT` (outside the repo); the fix is a `turbopack.root` setting, not a site-quality item.

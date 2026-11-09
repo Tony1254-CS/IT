@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   },
   description:
     "Software, intelligence and security for companies that expect more.",
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     siteName: "Quintessence",

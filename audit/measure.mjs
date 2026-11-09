@@ -11,14 +11,9 @@ const VPS = [
 
 const browser = await chromium.launch();
 
-function fmt(r) {
-  return `L${Math.round(r.left)} R${Math.round(r.right)} W${Math.round(r.width)}`;
-}
-
 for (const vp of VPS) {
   const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
   const page = await ctx.newPage();
-  await page.waitforTimeout ? null : null;
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: "networkidle" });
     await page.waitForTimeout(2600); // let preloader finish + settle

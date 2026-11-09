@@ -51,7 +51,6 @@
     font-family: var(--font-body);
     font-size: clamp(1rem, 1vw + 0.25rem, 1.125rem);
     line-height: 1.6;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
