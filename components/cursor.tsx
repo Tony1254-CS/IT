@@ -13,7 +13,10 @@ export default function CustomCursor() {
     };
 
     const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target;
+      // Guard: document-level listeners can fire with non-Element targets
+      // (e.g. the Document), and `.closest` only exists on Element.
+      if (!(target instanceof Element)) return;
       if (target.tagName === "A" || target.tagName === "BUTTON" || target.closest("a") || target.closest("button")) {
         setIsOverInteractive(true);
         setIsHovering(true);
