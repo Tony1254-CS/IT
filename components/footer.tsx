@@ -25,7 +25,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="inline-block mb-6">
-              <div className="font-display text-2xl font-semibold tracking-tight text-ivory italic">
+              <div className="font-display text-2xl font-normal tracking-tight text-ivory italic">
                 Quintessence
               </div>
             </Link>
@@ -36,7 +36,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h2 className="font-display text-lg font-semibold text-ivory mb-6">Navigation</h2>
+            <h2 className="font-display text-lg font-normal tracking-wide text-ivory mb-6">Navigation</h2>
             <nav className="grid grid-cols-2 gap-x-12 gap-y-3" aria-label="Footer">
               <Link href="/" className="block text-ivory/60 hover:text-ivory transition-colors text-sm uppercase tracking-widest">
                 Home

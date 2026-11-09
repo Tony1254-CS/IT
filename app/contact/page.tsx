@@ -31,6 +31,10 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     const lenis = new Lenis({
       lerp: 0.08,
       duration: 1.2,
@@ -122,7 +126,7 @@ export default function ContactPage() {
         <section className="relative min-h-screen flex flex-col justify-center px-6">
           <HeroShader />
           <div className="relative z-10 max-w-[90rem] mx-auto">
-            <h1 className="font-display text-[clamp(3rem,10vw,8rem)] font-semibold tracking-[-0.02em] leading-none text-ivory italic" data-contact-reveal>
+            <h1 className="font-display text-[clamp(3rem,10vw,8rem)] font-normal tracking-[-0.02em] leading-none text-ivory italic" data-contact-reveal>
               Begin a Project
             </h1>
             <p className="mt-6 text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-ivory/70 max-w-[42rem]" data-contact-reveal>
@@ -139,7 +143,7 @@ export default function ContactPage() {
           <div className="max-w-[90rem] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
-                <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold tracking-[-0.02em] text-foreground mb-8">Get in touch</h2>
+                <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-normal tracking-[-0.02em] text-foreground mb-8">Get in touch</h2>
                 {submitted ? (
                   <div className="p-8 rounded-2xl border border-accent/30 bg-ivory/5">
                     <p className="font-display text-[clamp(1.5rem,2.5vw,2rem)] italic text-foreground">Thank you.</p>
@@ -211,7 +215,7 @@ export default function ContactPage() {
               <div className="relative hidden md:block">
                 <div className="sticky top-32">
                   <div className="p-8 rounded-2xl border border-accent/20 bg-ivory/5">
-                    <h3 className="font-display text-[clamp(1.5rem,2.5vw,2rem)] font-semibold tracking-[-0.01em] text-foreground mb-4">Contact</h3>
+                    <h3 className="font-display text-[clamp(1.5rem,2.5vw,2rem)] font-normal tracking-[-0.01em] text-foreground mb-4">Contact</h3>
                     <div className="space-y-4">
                       <a
                         href="mailto:hello@quintessence.com"

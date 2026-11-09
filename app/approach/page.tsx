@@ -9,6 +9,7 @@ import CustomCursor from "@/components/cursor";
 import Nav from "@/components/nav";
 import Preloader from "@/components/preloader";
 import Footer from "@/components/footer";
+import { approachSteps } from "@/data/approach";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,10 @@ export default function ApproachPage() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     const lenis = new Lenis({
       lerp: 0.08,
       duration: 1.2,
@@ -84,10 +89,16 @@ export default function ApproachPage() {
         <section className="relative min-h-screen flex flex-col justify-center px-6">
           <HeroShader />
           <div className="relative z-10 max-w-[90rem] mx-auto">
-            <h1 className="font-display text-[clamp(3rem,10vw,8rem)] font-semibold tracking-[-0.02em] leading-none text-ivory italic" data-approach-reveal>
+            <h1
+              className="font-display text-[clamp(3rem,10vw,8rem)] font-normal tracking-[-0.02em] leading-none text-ivory italic"
+              data-approach-reveal
+            >
               Our Approach
             </h1>
-            <p className="mt-6 text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-ivory/70 max-w-[42rem]" data-approach-reveal>
+            <p
+              className="mt-6 text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-ivory/70 max-w-[42rem]"
+              data-approach-reveal
+            >
               We believe in deliberate progress, not rapid iteration. Our four-step process guides you from insight to implementation.
             </p>
             <div className="mt-10 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/60">
@@ -100,50 +111,25 @@ export default function ApproachPage() {
         <section className="relative py-32 px-6 bg-background">
           <div className="max-w-[90rem] mx-auto">
             <div className="relative grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-              <div className="relative">
-                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
-                  <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
-                    <span className="font-mono text-background font-semibold">01</span>
-                  </div>
-                  <div className="pt-8 pl-8">
-                    <h2 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background mb-4">Discover</h2>
-                    <p className="text-background leading-relaxed">Understanding your unique challenges and opportunities through deep consultation and technical assessment.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="relative">
-                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
-                  <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
-                    <span className="font-mono text-background font-semibold">02</span>
-                  </div>
-                  <div className="pt-8 pl-8">
-                    <h2 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background mb-4">Define</h2>
-                    <p className="text-background leading-relaxed">Precise requirements and architect a solution path that balances ambition with practicality.</p>
+              {approachSteps.map((step) => (
+                <div key={step.step} className="relative">
+                  <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
+                    <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
+                      <span className="font-mono text-xs text-background font-semibold">
+                        {step.step}
+                      </span>
+                    </div>
+                    <div className="pt-8 pl-8">
+                      <h2 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-normal tracking-[-0.01em] text-background mb-4">
+                        {step.title}
+                      </h2>
+                      <p className="text-background leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="relative">
-                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
-                  <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
-                    <span className="font-mono text-background font-semibold">03</span>
-                  </div>
-                  <div className="pt-8 pl-8">
-                    <h2 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background mb-4">Build</h2>
-                    <p className="text-background leading-relaxed">Deploy and iterate with precision, ensuring every component works in harmony with the whole.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="relative">
-                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
-                  <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
-                    <span className="font-mono text-background font-semibold">04</span>
-                  </div>
-                  <div className="pt-8 pl-8">
-                    <h2 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background mb-4">Sustain</h2>
-                    <p className="text-background leading-relaxed">Long-term support and optimization to ensure sustained performance and growth.</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>

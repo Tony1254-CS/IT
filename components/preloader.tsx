@@ -38,7 +38,11 @@ export default function Preloader({ onFinish }: { onFinish: () => void }) {
   }, [onFinish]);
 
   useIsoLayoutEffect(() => {
-    if (readShown()) {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (readShown() || prefersReducedMotion) {
       setShow(false);
       onFinishRef.current();
     }
@@ -86,7 +90,7 @@ export default function Preloader({ onFinish }: { onFinish: () => void }) {
           return (
             <span
               key={i}
-              className="preloader-letter font-display text-[clamp(2rem,8vw,5rem)] font-semibold tracking-[0.5em] text-ivory italic"
+              className="preloader-letter font-display text-[clamp(2rem,8vw,5rem)] font-normal tracking-[0.5em] text-ivory italic"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
             {char}

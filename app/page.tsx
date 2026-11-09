@@ -18,6 +18,10 @@ export default function Page() {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     const lenis = new Lenis({
       lerp: 0.08,
       duration: 1.2,
@@ -119,7 +123,7 @@ export default function Page() {
           <HeroShader />
           <div className="relative z-10 max-w-[90rem] mx-auto">
             <h1
-              className="font-display text-[clamp(3rem,10vw,8rem)] font-semibold tracking-[-0.02em] leading-none text-ivory italic"
+              className="font-display text-[clamp(3rem,10vw,8rem)] font-normal tracking-[-0.02em] leading-none text-ivory italic"
               data-scroll
             >
               Engineered with intent.
@@ -146,7 +150,7 @@ export default function Page() {
         <section className="bg-ivory text-background py-24 px-6">
           <div className="max-w-[70rem] mx-auto">
             <p
-              className="font-display text-[clamp(2rem,6vw,3.5rem)] font-semibold tracking-[-0.02em] leading-none text-background italic ink-reveal"
+              className="font-display text-[clamp(2rem,6vw,3.5rem)] font-normal tracking-[-0.02em] leading-none text-background italic ink-reveal"
               data-scroll
             >
               We build the systems behind ambitious companies. Fewer moving

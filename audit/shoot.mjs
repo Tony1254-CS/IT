@@ -84,7 +84,7 @@ const PAGES = [
     });
 
     // CTA hover
-    const cta = page.locator('a:has-text("Begin a project")').first();
+    const cta = page.locator('main a:has-text("Begin a project")').first();
     await cta.hover();
     await page.waitForTimeout(500);
     await page.screenshot({

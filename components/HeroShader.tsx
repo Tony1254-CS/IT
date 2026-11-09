@@ -80,6 +80,9 @@ export default function HeroShader() {
 
     const mesh = new OGL.Mesh(gl, { geometry, program });
 
+    const prefersReducedMotion =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     // Start paused; resume when visible
     let paused = true;
     const observer = new IntersectionObserver(
@@ -97,17 +100,28 @@ export default function HeroShader() {
         e.clientX / window.innerWidth,
         e.clientY / window.innerHeight
       );
+      if (prefersReducedMotion) {
+        renderer.render({ scene: mesh });
+      }
     };
     window.addEventListener("mousemove", onMouseMove);
 
     const onResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       program.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+      if (prefersReducedMotion) {
+        renderer.render({ scene: mesh });
+      }
     };
     window.addEventListener("resize", onResize);
     onResize();
 
     const render = () => {
+      if (prefersReducedMotion) {
+        program.uniforms.uTime.value = 1.0;
+        renderer.render({ scene: mesh });
+        return;
+      }
       if (!paused) {
         const t = (performance.now() - startTime) / 1000;
         program.uniforms.uTime.value = t;

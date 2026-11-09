@@ -2,16 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { navItems } from "@/data/navigation";
 
 export default function Nav() {
   const pathname = usePathname();
-
-  const navItems = [
-    { href: "/capabilities", label: "Capabilities" },
-    { href: "/approach", label: "Approach" },
-    { href: "/principles", label: "Principles" },
-    { href: "/contact", label: "Contact" },
-  ];
 
   return (
     <nav
@@ -25,7 +19,7 @@ export default function Nav() {
           <div className="relative z-10 flex items-center justify-between md:justify-start">
             <Link
               href="/"
-              className="font-display text-[clamp(1.125rem,2vw,1.5rem)] font-semibold tracking-[0.2em] text-ivory italic py-1"
+              className="font-display text-[clamp(1.125rem,2vw,1.5rem)] font-normal tracking-[0.2em] text-ivory italic py-1"
             >
               Quintessence
             </Link>
