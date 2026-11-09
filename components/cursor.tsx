@@ -1,23 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
-  const [isOverInteractive, setIsOverInteractive] = useState(false);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  // Interactions are rare; state here is fine. Raw position is not — it flows
+  // through a ref + rAF straight into a transform, never through React state.
   const [isHovering, setIsHovering] = useState(false);
+  const [isOverInteractive, setIsOverInteractive] = useState(false);
 
   useEffect(() => {
-    const updateCursorPosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+    // Touch input has no cursor: never render one.
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let raf = 0;
+
+    const applyPosition = () => {
+      raf = 0;
+      const node = cursorRef.current;
+      if (node) node.style.transform = `translate3d(${targetX}px, ${targetY}px, 0)`;
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      setVisible(true); // idempotent — React bails out after the first flip
+      if (!raf) raf = requestAnimationFrame(applyPosition);
     };
 
     const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target;
       // Guard: document-level listeners can fire with non-Element targets
       // (e.g. the Document), and `.closest` only exists on Element.
-      if (!(target instanceof Element)) return;
-      if (target.tagName === "A" || target.tagName === "BUTTON" || target.closest("a") || target.closest("button")) {
+      if (!(e.target instanceof Element)) return;
+      if (e.target.tagName === "A" || e.target.tagName === "BUTTON" || e.target.closest("a") || e.target.closest("button")) {
         setIsOverInteractive(true);
         setIsHovering(true);
       }
@@ -28,59 +47,42 @@ export default function CustomCursor() {
       setIsHovering(false);
     };
 
-    document.addEventListener("mousemove", updateCursorPosition);
+    document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseenter", handleMouseEnter, true);
     document.addEventListener("mouseleave", handleMouseLeave, true);
-
-    return () => {
-      document.removeEventListener("mousemove", updateCursorPosition);
-      document.removeEventListener("mouseenter", handleMouseEnter, true);
-      document.removeEventListener("mouseleave", handleMouseLeave, true);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Tab") {
-        setIsOverInteractive(true);
-        setIsHovering(true);
-      }
-    };
-
-    const handleKeyUp = () => {
-      setIsOverInteractive(false);
-      setIsHovering(false);
-    };
-
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
 
     return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseenter", handleMouseEnter, true);
+      document.removeEventListener("mouseleave", handleMouseLeave, true);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
 
-  useEffect(() => {
-    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    if (isTouch) {
-      // Store the new position in a ref to avoid triggering state updates synchronously
-      const newPosition = { x: -100, y: -100 };
-      // Schedule state update in the next tick
-      const timeoutId = setTimeout(() => {
-        setPosition(newPosition);
-      }, 0);
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Tab") {
+        setIsOverInteractive(true);
+        setIsHovering(true);
+      }
+    }
 
-      return () => clearTimeout(timeoutId);
+    function handleKeyUp() {
+      setIsOverInteractive(false);
+      setIsHovering(false);
     }
   }, []);
 
-  if (position.x === -100 && position.y === -100) return null;
-
+  // Initial render must be null on server AND client (no first-paint flash at
+  // 0,0); `visible` flips on the first mousemove, which only exists client-side.
+  if (!visible) return null;
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none z-50" style={{ left: position.x, top: position.y }}
+      ref={cursorRef}
+      className="fixed top-0 left-0 pointer-events-none z-50"
       data-cursor
     >
       <div

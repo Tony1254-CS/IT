@@ -130,3 +130,64 @@ Also fixed pre-commit in round 0: missing `lucide-react` devDep (P0 #2, build wa
 ## Overall after round 1: **5.9/10** (was 3.8)
 
 Every P0 item verified fixed; nothing new broken; no score regressed. Remaining P1 (round 2): shader mouse math, cursor rAF, a11y contrast/heading/touch re-measure, Lenis vs `scroll-behavior`, per-page metadata + title.template + favicon/OG, message textarea.
+
+---
+
+# Round 2 — P1 fixes (2026-11-09)
+
+Method: Playwright (Chromium) computed-style probes + screenshots (`audit/shoot.mjs after2`, wheel-driven `audit/interact.mjs`, new `audit/reveal-measure.mjs`) + desktop-only Lighthouse a11y/SEO/BP on all 5 pages + dev-server CWV (`audit/cwv.mjs`, labeled) + fresh-compile console sweep. Measured ground truth from Lighthouse: card fill `#7f7d79`; `text-background` full = **4.79:1** PASS; `/90` = **4.39:1** FAIL; `/80` = **3.87:1** FAIL; kicker `/70` = **3.34:1** FAIL; accent-on-card = **1.52–1.87:1** FAIL; footer `/60` ivory = **6.4:1** PASS on `#0b0b0c`.
+
+## What was fixed (8 entries, per the ≤8 round rule)
+
+| # | Fix | Files | Evidence after |
+|---|-----|-------|----------------|
+| 1 | **A11y contrast batch (grouped).** Full-ink sweep: all body copy, chips and card kickers switched from `/90`, `/80` and `/70` translucents to full `text-background` on ivory fills (capabilities ×6 body, approach ×4 + chips ×4, principles ×3); contact form-block cue and section cues to `/60` (≥6.4:1). Capability-card body copy re-swept on disk after earlier terminal-only sweep had not persisted — re-verified in **served HTML**: `0× /90`, 6× full-ink. Earlier axe "completes with variance" items now resolve uniformly. | `app/capabilities/page.tsx`, `app/approach/page.tsx`, `app/principles/page.tsx`, `app/contact/page.tsx` | Fresh desktop Lighthouse a11y **1.0 on all 5 pages, zero failures**; kickers at 4.79:1 against the `#7f7d79` fill. |
+| 2 | **Nav legibility over light hero.** Pill backdrop darkened (`bg-background/70` measured `#858480` under white ink — max 3.7:1) and each link switched to explicit ivory tokens instead of inherited translucent ink. | `components/nav.tsx` | Nav links pass on every page's hero; `after2-*-1440.png` folds show legible pill on the glowing dark hero. |
+| 3 | **Footer heading order + contrast.** Structural `h3` → `h2` (no skip between page `h1` and footer), translucent `/40` ivory → `/60` ×2 (3.1:1 → 6.4:1). | `components/footer.tsx` | Lighthouse a11y 1.0 incl. heading-order audit on all 5 pages. |
+| 4 | **Metadata bundle.** Root `metadata.title.default`/`title.template`, `metadataBase`, `openGraph` + `twitter:card=summary_large_image`; favicon as `app/icon.svg` (route `/icon.svg`); OG asset as 1200×630 **hand-authored** `audit/og.html` → rendered screenshot → `app/opengraph-image.png` (no AI image gen); unique title/description per route via 4 new per-page `layout.tsx`. | `app/layout.tsx`, `app/{approach,capabilities,principles,contact}/layout.tsx`, `app/icon.svg`, `app/opengraph-image.png` | Served HTML verified: per-route titles + descriptions, `og:image` + `twitter:image` both point at `/opengraph-image.png` (HTTP 200, `image/png`, 168,894 bytes); `/icon.svg` 200 `image/svg+xml`. Prod build emits both as static routes. |
+| 5 | **Contact message textarea.** Round-1 known-incomplete item closed: real multi-line message field added to the labeled Name/Email/Subject/Budget form. | `app/contact/page.tsx` | `<textarea` present in served `/contact` HTML; `interact.mjs` still reports 3 inline errors in `rgb(223,143,107)` on invalid submit + success card on valid submit. |
+| 6 | **Input-latency P1 set.** Shader `uMouse` no longer divided by resolution twice (glow truly follows the pointer); custom cursor rewritten to ref + single rAF (no React re-render per mousemove), Element `instanceof` guard against document-level events, touch gate (never renders on touch), no first-paint flash at (0,0); preloader reads sessionStorage in an SSR-safe iso layout effect with try/catch (private-mode safe), no render-time storage access, single keyframe block. | `components/HeroShader.tsx`, `components/cursor.tsx`, `components/preloader.tsx` | Fresh compile console sweep: **zero errors/warnings** on all pages (`shoot.mjs after2` logged none). Whole-page diagonal shader glow in `after2-home-*.png` (was pinned bottom-left). |
+| 7 | **`scroll-behavior` vs Lenis — resolved as verified no-op.** `html{scroll-behavior:smooth}` confirmed absent from every source file (Lenis owns smoothing; the old rule is gone). The preloader/sessionStorage half of P1 #13 is #6 above; globals.css duplicate keyframes were already merged in round 1. No code change required — finding documented. | — | `grep` across repo: 0 occurrences (only the comment noting Lenis ownership). |
+| 8 | **Statement reveal completion — two compounding defects found and fixed during round-2 verification.** (a) **Unreachable scrub end**: the masked branch shared `end: "bottom 20%"`, but the statement's bottom (~570px in an 812px viewport at scroll-end) never crosses the 163px line → mask stalls at `-5.4847% 0px` forever (measured). Statement top sits at 157px = 19.3% at scroll-end, so masked elements now scrub `top 85% → top 40%` (completable for any height); the non-masked opacity branch keeps `bottom 20%`. (b) **Mask geometry mistuned**: with `mask-size: 200%`, position 0% puts the window over image [0..1E], so the gradient must hold black over image [0..50%] — the old `black 30% → transparent 70%` left the window's right 40% inside the fade (faded line-endings) and any sub-0% park wrapped a transparent sliver over the block's left edge (mid-word clip). Gradient retuned `black 0%, black 50%, transparent 100%` + `mask-repeat: no-repeat` with park `-150% 0` (fully hidden; the default repeat would tile the black half back over the element). | `app/page.tsx` (conditional trigger), `app/globals.css` (gradient + park) | `interact.mjs` after fix: mask **`0% 0px`**, opacity 1 (was `-5.4847% 0px` stall); `after2-home-1440-statement.png` shows edge-to-edge ink on all three lines — no left mid-word clip, no right fade. CWV unaffected: CLS 0. |
+
+## Verification after the round
+
+- `npm run build` ✅ (10/10 static, incl. `/icon.svg` + `/opengraph-image.png`), `npm run lint` ✅ 0 errors (2 pre-existing warnings confined to `audit/measure.mjs` tooling, not app code), `tsc --noEmit` ✅.
+- **Lighthouse (desktop-only, labeled): a11y 1.0 / BP 1.0 / SEO 1.0 — all 5 pages, zero failures** (trajectory: home a11y 0.88 → 0.93 → 1.0).
+- CWV (dev server, honest — warm Turbopack compile): CLS **0**, LCP **236ms**, FCP **236ms**, TTFB **75ms** (prior runs 460–956ms; dev-only, prod numbers still unknown).
+- Interactions: statement mask reaches `0% 0px` and holds; contact errors + success verified again; statement shot edge-to-edge.
+- `reveal-measure.mjs` (all pages, scroll-end): home h1/p opacity 1 (both above viewport at rest, invisible — not a defect) and statement opacity 1/mask `0% 0px`; **`/approach`, `/capabilities`, `/principles`, `/contact` have zero `[data-scroll]` elements in DOM** — their reveal effects query an empty set (inert; cleanup candidate).
+- Presence checks: OG PNG 200/PNG/168,894 bytes; `/icon.svg` 200/svg; `<textarea` in `/contact`; per-route titles/descriptions/`twitter:card` in all 5 served pages.
+- Console: **zero errors/warnings on fresh compile**. Round-1's recurring `cursor.tsx target.closest` error proven a stale-compile artifact; `vsc-initialized` hydration mismatch traces to an installed browser extension, not app code.
+
+## Honest rescore after round 2 (was → is)
+
+| Category | Before | After | Why |
+|----------|--------|-------|-----|
+| Build & tooling | 6 | 7 | Clean build now also ships OG + favicon as static routes. |
+| Responsive integrity | 6 | 6 | No responsive defects remain open; unchanged — P2 `overflow-x:hidden` debris still flagged. |
+| Typography | 5 | 5 | Untouched per no-design-change rule (house italic rhythm kept). |
+| Motion | 7 | 9 | Flagship statement now completes scrub end-to-end with edge-to-edge ink (was stalling); shader tracks pointer; input path on rAF. |
+| Copy & honesty | 6 | 6 | No copy changes this round; minor repetition P2 stands. |
+| Navigation & IA | 6 | 6 | IA unchanged (hierarchies already agree); nav work this round was legibility, counted under a11y. |
+| Forms | 7 | 9 | Textarea closed the field gap; errors/in labels/links re-verified served. Submit remains a client-side demo (no endpoint): success card is UX state, noted as known-limitation, not re-altered. |
+| Accessibility | 6 | 9 | Lighthouse a11y 1.0 on all 5 pages zero failures; contrast fixed at measured ratios; desktop-only scan + no manual screen-reader pass keeps this at 9, not 10. |
+| Performance | 6 | 7 | Cursor re-render per frame eliminated; shader math correct; CWV unchanged (dev-only numbers, no prod verification). |
+| Metadata | 4 | 8.5 | Full title strategy + per-route descriptions + OG/Twitter cards + favicon all measured in served HTML; canonical links absent is P2 (Lighthouse SEO still 1.0). |
+
+## Overall after round 2: **7.3/10** (was 5.9)
+
+All P0s (#1–8) and all P1s (#9–16) from the baseline are closed; screenshot/interaction/console evidence re-taken (`after2-*`). Score did not reach ≥8.5 on two unscored-fix categories (typography 5, copy 6) that are P2 creative-polish items explicitly held back by the no-design-direction rule.
+
+## Round-3 candidates (P2 only — findings, not design direction)
+
+- `body{overflow-x:hidden}` debris (P2 #17) — remove and re-verify `scrollX=0`.
+- Hero CTA wraps to two lines inside the fixed-width pill at 375 (`after2-home-375.png`) — size the pill by content at small widths; legible today, refine allowed as a defect fix.
+- Dead reveal effects on 4 routes (inert `querySelectorAll`) — remove for hygiene.
+- Optional P2: canonical links per route; `/robots.txt` 404 observed in dev logs.
+
+## Known-limitations of measurement (carried honestly)
+
+- Lighthouse runs are **desktop-only**; CWV numbers are **dev-server** (Turbopack), not prod.
+- Screenshot DPR variance (1.5×/2×) per P2 #21 still applies to vertical comparisons.
+- Axe sampling variance: identical failures can resolve as "incomplete" page-to-page; fixed by full pattern sweep rather than per-page trust.

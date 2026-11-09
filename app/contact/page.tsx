@@ -15,7 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
 type FormErrors = {
   name?: string;
   email?: string;
-  subject?: string;
   budget?: string;
 };
 
@@ -25,7 +24,7 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
+    message: "",
     budget: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -92,9 +91,6 @@ export default function ContactPage() {
     if (!formData.email.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(formData.email)) {
       newErrors.email = "Valid email is required";
     }
-    if (!formData.subject.trim()) {
-      newErrors.subject = "Subject is required";
-    }
     if (!formData.budget) {
       newErrors.budget = "Please select a budget range";
     }
@@ -132,7 +128,7 @@ export default function ContactPage() {
             <p className="mt-6 text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-ivory/70 max-w-[42rem]" data-contact-reveal>
               Ready to start? Tell us about your project and we&apos;ll get back to you within one business day.
             </p>
-            <div className="mt-10 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/40">
+            <div className="mt-10 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/60">
               <span className="w-px h-4 bg-accent/30" />
               <span>Scroll down</span>
             </div>
@@ -176,15 +172,16 @@ export default function ContactPage() {
                     {errors.email && <p className="mt-1 text-sm text-error">{errors.email}</p>}
                   </div>
                   <div className="space-y-4">
-                    <label htmlFor="subject" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Subject</label>
-                    <input
-                      id="subject"
-                      type="text"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-4 py-3 rounded-2xl border border-foreground/20 bg-ivory/5 text-foreground focus:border-accent/60 focus:outline-none"
+                    <label htmlFor="message" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Message — optional</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={4}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="w-full px-4 py-3 rounded-2xl border border-foreground/20 bg-ivory/5 text-foreground focus:border-accent/60 focus:outline-none resize-y"
+                      placeholder="Tell us about your project — scope, timeline, constraints."
                     />
-                    {errors.subject && <p className="mt-1 text-sm text-error">{errors.subject}</p>}
                   </div>
                   <div className="space-y-4">
                     <label htmlFor="budget" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Budget Range</label>

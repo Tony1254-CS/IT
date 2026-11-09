@@ -48,25 +48,47 @@ export default function Page() {
       );
       elements.forEach((el) => {
         // `.ink-reveal[data-scroll]` hides text behind a mask parked at -100%;
-        // the reveal only completes if the mask itself is animated, not just opacity.
+        // the reveal must animate the mask alone. Opacity on a masked element
+        // renders pre-reveal ink at ~1.5:1 contrast (axe/lighthouse failure);
+        // the mask itself fully hides the ink until the reveal completes.
         const masked = el.classList.contains("ink-reveal");
-        gsap.fromTo(
-          el,
-          {
-            opacity: 0.2,
-            ...(masked ? { maskPosition: "-100% 0", webkitMaskPosition: "-100% 0" } : {}),
-          },
-          {
-            opacity: 1,
-            ...(masked ? { maskPosition: "0% 0", webkitMaskPosition: "0% 0" } : {}),
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              end: "bottom 20%",
-              scrub: true,
-            },
-          }
-        );
+        // The statement `.ink-reveal` sits so low in the document that its
+        // bottom never crosses the default "bottom 20%" line before scroll-end
+        // — the mask would stall mid-scrub and part of the text stays hidden
+        // behind the parking position. Anchoring the reveal to the element's
+        // own top (85% → 40% of the viewport) keeps the scrub completable for
+        // masked blocks of any height; non-masked opacity reveals keep the
+        // original bottom-anchored travel.
+        if (masked) {
+          gsap.fromTo(
+            el,
+            { maskPosition: "-100% 0", webkitMaskPosition: "-100% 0" },
+            {
+              maskPosition: "0% 0",
+              webkitMaskPosition: "0% 0",
+              scrollTrigger: {
+                trigger: el,
+                start: "top 85%",
+                end: "top 40%",
+                scrub: true,
+              },
+            }
+          );
+        } else {
+          gsap.fromTo(
+            el,
+            { opacity: 0.2 },
+            {
+              opacity: 1,
+              scrollTrigger: {
+                trigger: el,
+                start: "top 85%",
+                end: "bottom 20%",
+                scrub: true,
+              },
+            }
+          );
+        }
       });
     };
 
@@ -114,7 +136,7 @@ export default function Page() {
             >
               Begin a project
             </Link>
-            <div className="mt-16 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/40">
+            <div className="mt-16 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/60">
               <span className="w-px h-4 bg-accent/30" />
               <span>Scroll</span>
             </div>

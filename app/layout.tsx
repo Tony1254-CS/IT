@@ -24,8 +24,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Quintessence — Engineered with intent.",
-  description: "Software, intelligence and security for companies that expect more.",
+  metadataBase: new URL("https://quintessence.com"),
+  title: {
+    default: "Quintessence — Engineered with intent.",
+    template: "%s — Quintessence",
+  },
+  description:
+    "Software, intelligence and security for companies that expect more.",
+  openGraph: {
+    type: "website",
+    siteName: "Quintessence",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export const viewport: Viewport = {
@@ -38,7 +50,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-scroll-behavior="smooth"
       className={`${instrumentSerif.variable} ${hankenGrotesk.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

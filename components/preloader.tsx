@@ -1,43 +1,69 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const PRELOADER_KEY = "quintessence:preloader:shown";
+
+// Skip-before-paint gate must run before the browser paints. On the client the
+// key is read synchronously in a layout effect (no flash); useLayoutEffect
+// warns on the server, so fall back to useEffect there (SSR has no sessionStorage
+// anyway — the branch is a no-op).
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+const readShown = () => {
+  try {
+    return sessionStorage.getItem(PRELOADER_KEY) === "1";
+  } catch {
+    return false; // storage unavailable (e.g. private mode)
+  }
+};
+
+const markShown = () => {
+  try {
+    sessionStorage.setItem(PRELOADER_KEY, "1");
+  } catch {
+    // storage unavailable — preloader just replays next visit
+  }
+};
 
 export default function Preloader({ onFinish }: { onFinish: () => void }) {
   const [show, setShow] = useState(true);
   const [phase, setPhase] = useState("letters");
-
-  const alreadyShown =
-    typeof window !== "undefined" &&
-    sessionStorage.getItem(PRELOADER_KEY) === "1";
+  // Latest callback without effect re-runs firing extra timers.
+  const onFinishRef = useRef(onFinish);
 
   useEffect(() => {
-    if (alreadyShown) {
-      const t = setTimeout(() => {
-        setShow(false);
-        onFinish();
-      }, 0);
-      return () => clearTimeout(t);
+    onFinishRef.current = onFinish;
+  }, [onFinish]);
+
+  useIsoLayoutEffect(() => {
+    if (readShown()) {
+      setShow(false);
+      onFinishRef.current();
     }
+  }, []);
+
+  useIsoLayoutEffect(() => {
+    if (!show) return;
 
     const toCurtain = setTimeout(() => setPhase("curtain"), 700);
     const finish = setTimeout(() => {
-      sessionStorage.setItem(PRELOADER_KEY, "1");
+      markShown();
       setShow(false);
-      onFinish();
+      onFinishRef.current();
     }, 2200);
 
     return () => {
       clearTimeout(toCurtain);
       clearTimeout(finish);
     };
-  }, [alreadyShown, onFinish]);
+  }, [show]);
 
   const skip = () => {
-    sessionStorage.setItem(PRELOADER_KEY, "1");
+    markShown();
     setShow(false);
-    onFinish();
+    onFinishRef.current();
   };
 
   if (!show) return null;

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root {
+    --bg: #0B0B0C;
+    --ivory: #F2EEE6;
+    --champagne: #C8B28A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ivory);
+    font-family: Georgia, "Times New Roman", serif;
+    position: relative;
+  }
+  /* faint champagne wash top-right, echoing the hero glow */
+  .wash {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(720px 420px at 88% 8%, rgba(200, 178, 138, 0.16), transparent 62%),
+      radial-gradient(900px 500px at 4% 100%, rgba(200, 178, 138, 0.09), transparent 58%);
+  }
+  .content {
+    position: absolute; inset: 0;
+    padding: 72px 88px;
+    display: flex; flex-direction: column;
+  }
+  .kicker {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 17px; letter-spacing: 0.42em; text-transform: uppercase;
+    color: var(--champagne);
+  }
+  .headline {
+    margin-top: 116px;
+    font-size: 104px; line-height: 1.04; font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em;
+    max-width: 760px;
+  }
+  .sub {
+    margin-top: 30px;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 23px; line-height: 1.55; font-weight: 400;
+    color: rgba(242, 238, 230, 0.72);
+    max-width: 640px;
+  }
+  .footer {
+    margin-top: auto;
+    display: flex; align-items: center; gap: 14px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 15px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(242, 238, 230, 0.5);
+  }
+  .footer .tick { width: 2px; height: 15px; background: rgba(200, 178, 138, 0.45); }
+  /* The Q mark: champagne serif ring + tail, right-aligned, slightly bled */
+  .qmark { position: absolute; right: -74px; top: 105px; }
+</style>
+</head>
+<body>
+  <div class="wash"></div>
+  <svg class="qmark" width="430" height="430" viewBox="0 0 430 430" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="205" cy="195" rx="168" ry="180" stroke="#C8B28A" stroke-opacity="0.9" stroke-width="4"/>
+    <path d="M285 345 C315 385 350 408 392 424" stroke="#C8B28A" stroke-opacity="0.9" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+  <div class="content">
+    <div class="kicker">Quintessence</div>
+    <div class="headline">Engineered with&nbsp;intent.</div>
+    <div class="sub">Software, intelligence and security for companies that expect&nbsp;more.</div>
+    <div class="footer"><span class="tick"></span><span>hello@quintessence.com</span></div>
+  </div>
+</body>
+</html>

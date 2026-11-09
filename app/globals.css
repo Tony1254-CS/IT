@@ -42,9 +42,8 @@
  * Margin/padding/box-sizing invariants come from Tailwind's own preflight.
  */
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+  /* Lenis owns scroll smoothing; native smooth-scroll stays off so the two
+     systems never fight over scroll position. */
 
   body {
     background: var(--background);
@@ -79,15 +78,23 @@
   }
 
   .ink-reveal {
-    mask-image: linear-gradient(to right, black 30%, transparent 70%);
-    -webkit-mask-image: linear-gradient(to right, black 30%, transparent 70%);
+    mask-image: linear-gradient(to right, black 0%, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 0%, black 50%, transparent 100%);
   }
 
+  /*
+   * Parked off-window (-150%) the whole mask image sits outside the element
+   * window: fully hidden. Sweeping to 0% is edge-to-edge full ink with a soft
+   * leading edge. no-repeat is required — the default repeat would tile the
+   * black half over the element's far side at parked positions.
+   */
   .ink-reveal[data-scroll] {
+    mask-repeat: no-repeat;
     mask-size: 200% 100%;
-    mask-position: -100% 0;
+    mask-position: -150% 0;
+    -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 200% 100%;
-    -webkit-mask-position: -100% 0;
+    -webkit-mask-position: -150% 0;
   }
 
   .preloader-letter {

@@ -29,8 +29,9 @@ const fragment = `
            sin(uv.y * freq * 1.5 + uTime * 0.08 * amp) * amp;
     }
 
-    // Cursor interaction - soft glow following pointer
-    vec2 mouse = uMouse / uResolution;
+    // Cursor interaction - soft glow following pointer.
+    // uMouse is already normalized (0..1) in the mousemove handler.
+    vec2 mouse = uMouse;
     float cursorDist = distance(uv, mouse);
     float glow = exp(-cursorDist * 12.0) * 0.25;
 

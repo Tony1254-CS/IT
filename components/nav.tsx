@@ -21,7 +21,7 @@ export default function Nav() {
       <div className="mx-auto pointer-events-auto flex w-[calc(100%-2rem)] md:w-[calc(100%-4rem)] max-w-[90rem]">
         {/* Full-width pill: wordmark left, links + CTA right. On phones the pill
             grows to two rows (wordmark / links+CTA) so no link is pushed off-screen. */}
-        <div className="relative flex w-full flex-col md:flex-row md:items-center md:justify-between px-4 md:px-6 py-2.5 md:py-0 md:h-[4rem] rounded-[1.5rem] md:rounded-full border border-white/10 bg-white/5 backdrop-blur-xl backdrop-saturate-150 shadow-2xl">
+        <div className="relative flex w-full flex-col md:flex-row md:items-center md:justify-between px-4 md:px-6 py-2.5 md:py-0 md:h-[4rem] rounded-[1.5rem] md:rounded-full border border-white/10 bg-background/70 backdrop-blur-xl backdrop-saturate-150 shadow-2xl">
           <div className="relative z-10 flex items-center justify-between md:justify-start">
             <Link
               href="/"
@@ -38,13 +38,13 @@ export default function Nav() {
             </Link>
           </div>
 
-          <div className="relative z-10 mt-2 md:mt-0 flex flex-wrap items-center md:justify-end gap-x-5 md:gap-x-8 gap-y-2 text-mono text-xs uppercase tracking-widest opacity-70">
+          <div className="relative z-10 mt-2 md:mt-0 flex flex-wrap items-center md:justify-end gap-x-5 md:gap-x-8 gap-y-2 text-mono text-xs uppercase tracking-widest">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative flex h-6 items-center hover:opacity-100 transition-opacity duration-300 ${
-                  pathname === item.href ? "text-accent" : "text-ivory"
+                className={`relative flex h-6 items-center transition-colors duration-300 ${
+                  pathname === item.href ? "text-accent" : "text-ivory/70 hover:text-ivory"
                 }`}
               >
                 {item.label}

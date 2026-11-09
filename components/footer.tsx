@@ -36,7 +36,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h3 className="font-display text-lg font-semibold text-ivory mb-6">Navigation</h3>
+            <h2 className="font-display text-lg font-semibold text-ivory mb-6">Navigation</h2>
             <nav className="grid grid-cols-2 gap-x-12 gap-y-3" aria-label="Footer">
               <Link href="/" className="block text-ivory/60 hover:text-ivory transition-colors text-sm uppercase tracking-widest">
                 Home
@@ -66,14 +66,14 @@ export default function Footer() {
             <Mail size={16} aria-hidden="true" />
             hello@quintessence.com
           </a>
-          <p className="text-ivory/40 text-sm md:text-right">
+          <p className="text-ivory/60 text-sm md:text-right">
             We reply within one business day.
           </p>
         </div>
 
         {/* Bottom bar */}
         <div className="pt-6 border-t border-accent/20">
-          <div className="text-xs text-ivory/40">
+          <div className="text-xs text-ivory/60">
             © {currentYear} Quintessence. All rights reserved.
           </div>
         </div>

@@ -92,7 +92,7 @@ export default function CapabilitiesPage() {
             <p className="mt-6 text-[clamp(1rem,1.5vw,1.25rem)] leading-relaxed text-ivory/70 max-w-[42rem]" data-cap-reveal>
               Software, intelligence and security systems built for companies that expect more.
             </p>
-            <div className="mt-10 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/40">
+            <div className="mt-10 flex items-center gap-2 text-mono text-[0.75rem] uppercase tracking-widest text-ivory/60">
               <span className="w-px h-4 bg-accent/30" />
               <span>Scroll down</span>
             </div>
@@ -113,67 +113,67 @@ export default function CapabilitiesPage() {
               <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
-                    <span className="font-mono text-accent font-semibold">01</span>
+                    <span className="font-mono text-background font-semibold">01</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Software Engineering</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">Web apps, Mobile, Backend, Modernization</p>
-                <p className="text-background/80 leading-relaxed">Custom web applications, native mobile experiences, robust backend systems, and legacy modernization that integrate seamlessly with your existing infrastructure.</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background mb-4">Web apps, Mobile, Backend, Modernization</p>
+                <p className="text-background leading-relaxed">Custom web applications, native mobile experiences, robust backend systems, and legacy modernization that integrate seamlessly with your existing infrastructure.</p>
               </div>
 
               <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
-                    <span className="font-mono text-accent font-semibold">02</span>
+                    <span className="font-mono text-background font-semibold">02</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Applied AI</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">LLM integration, RAG, Agents, Computer vision</p>
-                <p className="text-background/80 leading-relaxed">Intelligent agents that understand context, retrieval-augmented generation for accurate responses, and computer vision capabilities for visual understanding.</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background mb-4">LLM integration, RAG, Agents, Computer vision</p>
+                <p className="text-background leading-relaxed">Intelligent agents that understand context, retrieval-augmented generation for accurate responses, and computer vision capabilities for visual understanding.</p>
               </div>
 
               <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
-                    <span className="font-mono text-accent font-semibold">03</span>
+                    <span className="font-mono text-background font-semibold">03</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Cybersecurity</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">Penetration testing, Secure code review, Cloud security, Compliance support</p>
-                <p className="text-background/80 leading-relaxed">Comprehensive security assessment, code review for vulnerabilities, cloud infrastructure hardening, and compliance validation to protect your digital assets.</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background mb-4">Penetration testing, Secure code review, Cloud security, Compliance support</p>
+                <p className="text-background leading-relaxed">Comprehensive security assessment, code review for vulnerabilities, cloud infrastructure hardening, and compliance validation to protect your digital assets.</p>
               </div>
 
               <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
-                    <span className="font-mono text-accent font-semibold">04</span>
+                    <span className="font-mono text-background font-semibold">04</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Cloud & Infrastructure</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">Cloud, DevOps, Kubernetes, Observability</p>
-                <p className="text-background/80 leading-relaxed">Scalable cloud architectures, DevOps automation, container orchestration, and comprehensive observability for mission-critical systems.</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background mb-4">Cloud, DevOps, Kubernetes, Observability</p>
+                <p className="text-background leading-relaxed">Scalable cloud architectures, DevOps automation, container orchestration, and comprehensive observability for mission-critical systems.</p>
               </div>
 
               <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
-                    <span className="font-mono text-accent font-semibold">05</span>
+                    <span className="font-mono text-background font-semibold">05</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Design & Brand</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">Product design, Brand systems, Motion</p>
-                <p className="text-background/80 leading-relaxed">Thoughtful product design, cohesive brand systems, and deliberate motion that guides user attention and enhances engagement.</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background mb-4">Product design, Brand systems, Motion</p>
+                <p className="text-background leading-relaxed">Thoughtful product design, cohesive brand systems, and deliberate motion that guides user attention and enhances engagement.</p>
               </div>
 
               <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
-                    <span className="font-mono text-accent font-semibold">06</span>
+                    <span className="font-mono text-background font-semibold">06</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Growth</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">SEO, Analytics, Performance marketing</p>
-                <p className="text-background/80 leading-relaxed">Search optimization, data-driven analytics, and performance marketing that scales with your growth objectives and drives measurable results.</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background mb-4">SEO, Analytics, Performance marketing</p>
+                <p className="text-background leading-relaxed">Search optimization, data-driven analytics, and performance marketing that scales with your growth objectives and drives measurable results.</p>
               </div>
             </div>
           </div>

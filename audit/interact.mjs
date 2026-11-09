@@ -22,12 +22,24 @@ const browser = await chromium.launch();
     if (el) el.scrollIntoView({ block: "start" });
   });
   await page.waitForTimeout(400);
-  for (let i = 0; i < 8; i++) {
-    await page.mouse.wheel(0, 400);
+  // Keep wheel-stepping until the ink-reveal mask is fully open (0% 0px),
+  // capped at 24 x 500px steps, sampling the mask every 3rd step.
+  let mask = "?";
+  for (let i = 0; i < 24; i++) {
+    await page.mouse.wheel(0, 500);
     await page.waitForTimeout(350);
+    if (i % 3 === 0) {
+      mask = await page.evaluate(() => {
+        const el = document.querySelector(".ink-reveal");
+        if (!el) return "?";
+        const cs = getComputedStyle(el);
+        return cs.maskPosition || cs.webkitMaskPosition || "?";
+      });
+      if (mask === "0% 0px") break;
+    }
   }
   await page.waitForTimeout(1200);
-  const mask = await page.evaluate(() => {
+  const reveal = await page.evaluate(() => {
     const els = [...document.querySelectorAll(".ink-reveal")];
     return els.map((el) => {
       const cs = getComputedStyle(el);
@@ -41,8 +53,8 @@ const browser = await chromium.launch();
       };
     });
   });
-  console.log("STATEMENT:", JSON.stringify(mask, null, 1));
-  await page.screenshot({ path: path.join(SHOTS, "after1-home-1440-statement.png") });
+  console.log("STATEMENT:", JSON.stringify(reveal, null, 1));
+  await page.screenshot({ path: path.join(SHOTS, "after2-home-1440-statement.png") });
   await ctx.close();
 }
 
@@ -68,12 +80,12 @@ const browser = await chromium.launch();
     return out;
   });
   console.log("ERRORS:", JSON.stringify(errors, null, 1));
-  await page.locator("form").screenshot({ path: path.join(SHOTS, "after1-contact-1440-errors.png") });
+  await page.locator("form").screenshot({ path: path.join(SHOTS, "after2-contact-1440-errors.png") });
 
   // valid submit
   await page.fill("#name", "Amara Okafor");
   await page.fill("#email", "amara@studiox.co");
-  await page.fill("#subject", "Mobile app for logistics");
+  await page.fill("#message", "Mobile logistics app — 3-month build, Android + iOS.");
   await page.selectOption("#budget", "$100k+");
   await page.click("button[type='submit']");
   await page.waitForTimeout(900);
@@ -86,7 +98,7 @@ const browser = await chromium.launch();
   console.log("SUCCESS:", JSON.stringify(success, null, 1));
   // form unmounts on success; the success card is the rounded-2xl box containing "Thank you"
   const successCard = page.locator("div.rounded-2xl", { hasText: "Thank you" }).first();
-  await successCard.screenshot({ path: path.join(SHOTS, "after1-contact-1440-success.png") });
+  await successCard.screenshot({ path: path.join(SHOTS, "after2-contact-1440-success.png") });
   await ctx.close();
 }
 
