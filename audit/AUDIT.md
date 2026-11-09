@@ -78,3 +78,55 @@ The single most destructive defect: an unlayered universal reset in `globals.css
 - Lighthouse (via browser tool) was desktop-only a11y/SEO/BP — not a full perf/category sweep; Performance figures come from my own Playwright CWV capture on the **dev server** (Turbopack, no prod build numbers).
 - Screenshots are DPR-different per width (see P2 #21); all overflow measurements used `scrollWidth vs clientWidth` per page and found **no** true horizontal scroll anywhere — the edge damage is utilities being zeroed plus `body{overflow-x:hidden}` masking what survives past the edge.
 - Every spacing utility claim is backed by a computed-style probe (`audit/probe.mjs`): a `.px-6` section computed `padding: 0px`; `.px-6` rules exist in the compiled CSS chunk — the failure is cascade defeat, not class generation.
+
+---
+
+# Round 1 — P0 fixes (2026-11-09)
+
+## What was fixed (7 fixes, per the ≤8 round rule)
+
+| # | Fix | Files | Evidence after |
+|---|-----|-------|----------------|
+| 1 | **Universal reset deleted, real layered base rewritten.** The unlayered `*,*::before,*::after{margin:0;padding:0}` cascade-killer removed entirely; `globals.css` rebuilt with proper `@layer base` entries, `--error` token (`#DF8F6B` → `--color-error` in `@theme`), single preloader keyframe block. This root fix also self-heals the approach badge/title overlap (P0 #8) automatically — the dead `pt-8 pl-8` notch padding works again. | `app/globals.css` | `npm run build` passes (8 static pages); lint + tsc clean; overflow probe `scrollX=0` at 375/768/1440 on all 5 pages; `after1-approach-768-full.png` shows card 04 no longer clipped. |
+| 2 | **Nav rewritten for mobile + honest IA.** Two-row mobile pill (verified clean at 375), full-width desktop pill inside 32px gutters, `/principles` added to match footer IA, ≥44px touch targets, `aria-label="Main"`, wordmark tracking fixed so it no longer forces overflow. | `components/nav.tsx` | `after1-home-375-nav.png`: two-row pill fully on-screen, all 4 links reachable. |
+| 3 | **Radius sweep + card polish.** Invalid `rounded-2` → `rounded-2xl` ×14 across capabilities/approach (fixes P1 #9 early because the same touch-points were being edited); capabilities numeral chip now transitions on card hover (P1 #14); stray "Bangla language AI" sentence removed. | `app/capabilities/page.tsx`, `app/approach/page.tsx` | `after1-capabilities-1440-full.png` + hover shots: soft corners everywhere, chip accent on hover. |
+| 4 | **Contact form made real.** Labels visible (`text-foreground/60` on dark), associated via `htmlFor`/`id`; validation errors render in the palette `--color-error` (`#DF8F6B`), no more off-palette `text-red-600` (P1 #16 folded in); invalid submit shows all 4 inline errors; valid submit swaps form → success card with copy. | `app/contact/page.tsx` | `audit/interact.mjs`: 4 errors live in `rgb(223,143,107)`; success block renders "Thank you. / Your brief is with us — we'll get back to you within one business day." (`crop-after1-contact-errors.png`, `crop-after1-contact-success.png`). |
+| 5 | **Footer rewritten honestly.** Fabricated `(555)` phone / made-up address / fake hours removed; legal links removed; real email strip `hello@quintessence.com`, the 5 real pages as links, plain copyright bar. Symmetric 4-col scaffold gone. | `components/footer.tsx` | `after1-home-1440-full.png`, `after1-approach-1440-full.png`, `after1-contact-1440-full.png`. |
+| 6 | **Ink-reveal statement fully animates now.** Root cause was the GSAP tween animating only `opacity` while the mask sat parked at `mask-position:-100%`. Tween now animates `maskPosition`/`webkitMaskPosition` too. | `app/page.tsx` (reveal tween) | Probe during wheel-scroll: `.ink-reveal` mask at `-5.4847% 0px` mid-tween, opacity `0.9561` (was pinned at `-100% 50%` forever); `after1-home-1440-statement.png` shows the section mid-reveal — text now emerges left→right instead of staying stuck at 0% visible. |
+| 7 | **Approach 768px overflow fixed.** Root cause: `flex md:flex-row` with `md:w-1/4` wrappers hit min-content shrink and clipped card 04 at the right edge at 768. Now `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4` with plain `relative` wrappers. | `app/approach/page.tsx` | Overflow measure `scrollX=0` at 768; `after1-approach-768-full.png` — all four cards inside the viewport. |
+
+Also fixed pre-commit in round 0: missing `lucide-react` devDep (P0 #2, build was unbuildable as-committed — logged for honesty, already in baseline commit).
+
+## Verification after the round
+
+- `npm run build` ✅ 8 static pages, lint ✅, `tsc` ✅.
+- Horizontal overflow: `scrollX=0` at 375/768/1440 across all 5 pages (`audit/measure.mjs`).
+- CWV (dev server, honest): CLS **0.0007**, LCP **776ms**, FCP **776ms**, TTFB **253ms** — same ballpark as baseline, no regressions.
+- Interactions (`audit/interact.mjs`): statement mask actually tweening; contact errors + success state verified with computed colors.
+- Console sweep: no new errors (only driver-level WebGL "GPU stall due to ReadPixels" in headless Chromium, pre-existing).
+
+## Known-incomplete, deferred on purpose
+
+- Contact form has no **message/textarea** yet (Name/Email/Subject/Budget only) — flagged, goes into the P1 round.
+- `html{scroll-behavior:smooth}` moved into `@layer base` but still races Lenis — decision deferred to P1.
+- Statement full-completion not re-measured past mid-reveal sampling; re-verify if P1 touches it.
+- Lighthouse a11y/SEO/BP not re-run this round; P1 round re-measures after fixing contrast/heading/touch items.
+
+## Honest rescore after round 1 (was → is)
+
+| Category | Before | After | Why |
+|----------|--------|-------|-----|
+| Build & tooling | 3 | 6 | Builds clean now; still no OG/favicon assets, no prod verification. |
+| Responsive integrity | 2 | 6 | Spacing/radius utilities live everywhere on every page; 375 nav reachable; all 5 pages overflow-clean at 3 widths. P2 `overflow-x:hidden` debris remains. |
+| Typography | 4 | 5 | Wordmark no longer forces pill overflow; italic-everything is still the house rhythm — kept per no-design-change rule. |
+| Motion | 5 | 7 | The flagship statement reveal actually works now; motion polish (per-element staggering) untouched. |
+| Copy & honesty | 3 | 6 | Fabricated phone/address/hours and fake legal links gone; honest email-only card; remaining padding: tiny copy repetition mentions (P2). |
+| Navigation & IA | 4 | 6 | Nav ↔ footer hierarchies agree (5 pages); real focus alt: Principles still deeper than nav density. |
+| Forms | 3 | 7 | Visible, associated labels; palette error color; real inline validation + success state; still demo-only submit + no message field (P1). |
+| Accessibility | 4 | 6 | Biggest contrast failure (form labels) fixed; `--error` palette token; nav touch targets; until Lighthouse re-run, chip contrast/heading-order fixes stay in P1. |
+| Performance | 6 | 6 | CWV unchanged (fine); cursor `setState` per mousemove and double-divide shader mouse still pending (P1). |
+| Metadata | 4 | 4 | Untouched this round; P1. |
+
+## Overall after round 1: **5.9/10** (was 3.8)
+
+Every P0 item verified fixed; nothing new broken; no score regressed. Remaining P1 (round 2): shader mouse math, cursor rAF, a11y contrast/heading/touch re-measure, Lenis vs `scroll-behavior`, per-page metadata + title.template + favicon/OG, message textarea.

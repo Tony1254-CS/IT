@@ -47,11 +47,18 @@ export default function Page() {
         document.querySelectorAll<HTMLElement>("[data-scroll]")
       );
       elements.forEach((el) => {
+        // `.ink-reveal[data-scroll]` hides text behind a mask parked at -100%;
+        // the reveal only completes if the mask itself is animated, not just opacity.
+        const masked = el.classList.contains("ink-reveal");
         gsap.fromTo(
           el,
-          { opacity: 0.2 },
+          {
+            opacity: 0.2,
+            ...(masked ? { maskPosition: "-100% 0", webkitMaskPosition: "-100% 0" } : {}),
+          },
           {
             opacity: 1,
+            ...(masked ? { maskPosition: "0% 0", webkitMaskPosition: "0% 0" } : {}),
             scrollTrigger: {
               trigger: el,
               start: "top 85%",

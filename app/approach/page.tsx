@@ -99,9 +99,9 @@ export default function ApproachPage() {
 
         <section className="relative py-32 px-6 bg-background">
           <div className="max-w-[90rem] mx-auto">
-            <div className="relative flex flex-col md:flex-row gap-8">
-              <div className="flex-1 relative md:w-1/4">
-                <div className="relative p-8 rounded-2 border border-accent/20 bg-ivory/50">
+            <div className="relative grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <div className="relative">
+                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
                   <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
                     <span className="font-mono text-accent font-semibold">01</span>
                   </div>
@@ -111,8 +111,8 @@ export default function ApproachPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex-1 relative md:w-1/4">
-                <div className="relative p-8 rounded-2 border border-accent/20 bg-ivory/50">
+              <div className="relative">
+                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
                   <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
                     <span className="font-mono text-accent font-semibold">02</span>
                   </div>
@@ -122,8 +122,8 @@ export default function ApproachPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex-1 relative md:w-1/4">
-                <div className="relative p-8 rounded-2 border border-accent/20 bg-ivory/50">
+              <div className="relative">
+                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
                   <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
                     <span className="font-mono text-accent font-semibold">03</span>
                   </div>
@@ -133,8 +133,8 @@ export default function ApproachPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex-1 relative md:w-1/4">
-                <div className="relative p-8 rounded-2 border border-accent/20 bg-ivory/50">
+              <div className="relative">
+                <div className="relative p-8 rounded-2xl border border-accent/20 bg-ivory/50">
                   <div className="absolute top-0 left-0 w-8 h-8 rounded-full border border-accent/30 bg-accent/10 flex items-center justify-center">
                     <span className="font-mono text-accent font-semibold">04</span>
                   </div>

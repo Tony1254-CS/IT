@@ -110,9 +110,9 @@ export default function CapabilitiesPage() {
         <section className="relative py-32 px-6 bg-background">
           <div className="max-w-[90rem] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="group relative p-6 rounded-2 border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
+              <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
                     <span className="font-mono text-accent font-semibold">01</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Software Engineering</h3>
@@ -121,20 +121,20 @@ export default function CapabilitiesPage() {
                 <p className="text-background/80 leading-relaxed">Custom web applications, native mobile experiences, robust backend systems, and legacy modernization that integrate seamlessly with your existing infrastructure.</p>
               </div>
 
-              <div className="group relative p-6 rounded-2 border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
+              <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
                     <span className="font-mono text-accent font-semibold">02</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Applied AI</h3>
                 </div>
-                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">LLM integration, RAG, Agents, Computer vision. Bangla language AI</p>
+                <p className="text-mono text-xs uppercase tracking-widest text-background/70 mb-4">LLM integration, RAG, Agents, Computer vision</p>
                 <p className="text-background/80 leading-relaxed">Intelligent agents that understand context, retrieval-augmented generation for accurate responses, and computer vision capabilities for visual understanding.</p>
               </div>
 
-              <div className="group relative p-6 rounded-2 border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
+              <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
                     <span className="font-mono text-accent font-semibold">03</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Cybersecurity</h3>
@@ -143,9 +143,9 @@ export default function CapabilitiesPage() {
                 <p className="text-background/80 leading-relaxed">Comprehensive security assessment, code review for vulnerabilities, cloud infrastructure hardening, and compliance validation to protect your digital assets.</p>
               </div>
 
-              <div className="group relative p-6 rounded-2 border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
+              <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
                     <span className="font-mono text-accent font-semibold">04</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Cloud & Infrastructure</h3>
@@ -154,9 +154,9 @@ export default function CapabilitiesPage() {
                 <p className="text-background/80 leading-relaxed">Scalable cloud architectures, DevOps automation, container orchestration, and comprehensive observability for mission-critical systems.</p>
               </div>
 
-              <div className="group relative p-6 rounded-2 border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
+              <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
                     <span className="font-mono text-accent font-semibold">05</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Design & Brand</h3>
@@ -165,9 +165,9 @@ export default function CapabilitiesPage() {
                 <p className="text-background/80 leading-relaxed">Thoughtful product design, cohesive brand systems, and deliberate motion that guides user attention and enhances engagement.</p>
               </div>
 
-              <div className="group relative p-6 rounded-2 border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
+              <div className="group relative p-6 rounded-2xl border border-accent/20 bg-ivory/50 hover:border-accent/40 hover:bg-ivory/80 transition-all">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full border border-accent/30 bg-accent/10 transition-colors group-hover:border-accent/60 group-hover:bg-accent/20">
                     <span className="font-mono text-accent font-semibold">06</span>
                   </div>
                   <h3 className="font-display text-[clamp(1.5rem,2.5vw,2.5rem)] font-semibold tracking-[-0.01em] text-background">Growth</h3>

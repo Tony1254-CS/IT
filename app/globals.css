@@ -6,6 +6,7 @@
   --card: #1A1A1C;
   --accent: #C8B28A;
   --accent-hover: #B8A47A;
+  --error: #DF8F6B;
   --graphite: #1A1A1C;
   --ivory: #F2EEE6;
 
@@ -23,6 +24,7 @@
   --color-card: var(--card);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-error: var(--error);
   --color-graphite: var(--graphite);
   --color-ivory: var(--ivory);
 
@@ -33,106 +35,82 @@
   --radius-pill: var(--radius-pill);
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-@keyframes preloader-letter-reveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/*
+ * Everything below lives in @layer base so Tailwind utilities always win
+ * (an unlayered `* { margin: 0; padding: 0 }` reset previously defeated
+ * the utilities layer and zeroed every spacing/radius utility site-wide).
+ * Margin/padding/box-sizing invariants come from Tailwind's own preflight.
+ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
-}
 
-@keyframes preloader-fade-in {
-  to {
-    opacity: 1;
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1vw + 0.25rem, 1.125rem);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
-}
 
-.preloader-letter {
-  opacity: 0;
-  transform: translateY(100%);
-  animation: preloader-letter-reveal 0.8s ease-out forwards;
-}
-
-.preloader-fade {
-  opacity: 0;
-  animation: preloader-fade-in 0.6s ease-out forwards;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-body);
-  font-size: clamp(1rem, 1vw + 0.25rem, 1.125rem);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  line-height: 1.1;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  font-family: inherit;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.ink-reveal {
-  mask-image: linear-gradient(to right, black 30%, transparent 70%);
-  -webkit-mask-image: linear-gradient(to right, black 30%, transparent 70%);
-}
-
-.ink-reveal[data-scroll] {
-  mask-size: 200% 100%;
-  mask-position: -100% 0;
-  -webkit-mask-size: 200% 100%;
-  -webkit-mask-position: -100% 0;
-}
-
-@keyframes preloader-letter-reveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    line-height: 1.1;
   }
-}
 
-@keyframes preloader-fade-in {
-  to {
-    opacity: 1;
+  a {
+    color: inherit;
+    text-decoration: none;
   }
-}
 
-.preloader-letter {
-  opacity: 0;
-  transform: translateY(100%);
-  animation: preloader-letter-reveal 0.8s ease-out forwards;
-}
+  button {
+    font-family: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
 
-.preloader-fade {
-  opacity: 0;
-  animation: preloader-fade-in 0.6s ease-out forwards;
+  :focus-visible {
+    outline: 1px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .ink-reveal {
+    mask-image: linear-gradient(to right, black 30%, transparent 70%);
+    -webkit-mask-image: linear-gradient(to right, black 30%, transparent 70%);
+  }
+
+  .ink-reveal[data-scroll] {
+    mask-size: 200% 100%;
+    mask-position: -100% 0;
+    -webkit-mask-size: 200% 100%;
+    -webkit-mask-position: -100% 0;
+  }
+
+  .preloader-letter {
+    opacity: 0;
+    transform: translateY(100%);
+    animation: preloader-letter-reveal 0.8s ease-out forwards;
+  }
+
+  .preloader-fade {
+    opacity: 0;
+    animation: preloader-fade-in 0.6s ease-out forwards;
+  }
+
+  @keyframes preloader-letter-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes preloader-fade-in {
+    to {
+      opacity: 1;
+    }
+  }
 }

@@ -29,6 +29,7 @@ export default function ContactPage() {
     budget: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -104,7 +105,9 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", formData);
+      // TODO: wire to a backend (Server Action) before launch — client-side
+      // demo state only; nothing is persisted or transmitted yet.
+      setSubmitted(true);
     }
   };
 
@@ -140,44 +143,56 @@ export default function ContactPage() {
           <div className="max-w-[90rem] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
-                <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold tracking-[-0.02em] text-background mb-8">Get in touch</h2>
+                <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-semibold tracking-[-0.02em] text-foreground mb-8">Get in touch</h2>
+                {submitted ? (
+                  <div className="p-8 rounded-2xl border border-accent/30 bg-ivory/5">
+                    <p className="font-display text-[clamp(1.5rem,2.5vw,2rem)] italic text-foreground">Thank you.</p>
+                    <p className="mt-3 leading-relaxed text-foreground/70">
+                      Your brief is with us — we&apos;ll get back to you within one business day.
+                    </p>
+                  </div>
+                ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-4">
-                    <label className="block mb-2 text-mono text-xs uppercase tracking-widest text-background/70">Name</label>
+                    <label htmlFor="name" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Name</label>
                     <input
+                      id="name"
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-full border border-background/20 bg-ivory/50 focus:border-accent/50 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl border border-foreground/20 bg-ivory/5 text-foreground focus:border-accent/60 focus:outline-none"
                     />
-                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                    {errors.name && <p className="mt-1 text-sm text-error">{errors.name}</p>}
                   </div>
                   <div className="space-y-4">
-                    <label className="block mb-2 text-mono text-xs uppercase tracking-widest text-background/70">Email</label>
+                    <label htmlFor="email" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Email</label>
                     <input
+                      id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-full border border-background/20 bg-ivory/50 focus:border-accent/50 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl border border-foreground/20 bg-ivory/5 text-foreground focus:border-accent/60 focus:outline-none"
                     />
-                    {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                    {errors.email && <p className="mt-1 text-sm text-error">{errors.email}</p>}
                   </div>
                   <div className="space-y-4">
-                    <label className="block mb-2 text-mono text-xs uppercase tracking-widest text-background/70">Subject</label>
+                    <label htmlFor="subject" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Subject</label>
                     <input
+                      id="subject"
                       type="text"
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-4 py-3 rounded-full border border-background/20 bg-ivory/50 focus:border-accent/50 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl border border-foreground/20 bg-ivory/5 text-foreground focus:border-accent/60 focus:outline-none"
                     />
-                    {errors.subject && <p className="mt-1 text-sm text-red-600">{errors.subject}</p>}
+                    {errors.subject && <p className="mt-1 text-sm text-error">{errors.subject}</p>}
                   </div>
                   <div className="space-y-4">
-                    <label className="block mb-2 text-mono text-xs uppercase tracking-widest text-background/70">Budget Range</label>
+                    <label htmlFor="budget" className="block mb-2 text-mono text-xs uppercase tracking-widest text-foreground/60">Budget Range</label>
                     <select
+                      id="budget"
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="w-full px-4 py-3 rounded-full border border-background/20 bg-ivory/50 focus:border-accent/50 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl border border-foreground/20 bg-ivory/5 text-foreground focus:border-accent/60 focus:outline-none"
                     >
                       <option value="">Select a range</option>
                       <option value="Under $10k">Under $10k</option>
@@ -185,7 +200,7 @@ export default function ContactPage() {
                       <option value="$50k-$100k">$50k-$100k</option>
                       <option value="$100k+">$100k+</option>
                     </select>
-                    {errors.budget && <p className="mt-1 text-sm text-red-600">{errors.budget}</p>}
+                    {errors.budget && <p className="mt-1 text-sm text-error">{errors.budget}</p>}
                   </div>
                   <button
                     type="submit"
@@ -194,20 +209,20 @@ export default function ContactPage() {
                     Send message
                   </button>
                 </form>
+                )}
               </div>
               <div className="relative hidden md:block">
                 <div className="sticky top-32">
-                  <div className="p-8 rounded-2 border border-accent/20 bg-ivory/50">
-                    <h3 className="font-display text-[clamp(1.5rem,2.5vw,2rem)] font-semibold tracking-[-0.01em] text-background mb-4">Contact Info</h3>
-                    <div className="space-y-4 text-background/80">
-                      <p>hello@quintessence.com</p>
-                      <p>+1 (555) 123-4567</p>
-                      <p>Downtown Business District</p>
-                      <p>New York, NY</p>
-                    </div>
-                    <div className="mt-8">
-                      <p className="text-xs uppercase tracking-widest text-background/60">Business hours</p>
-                      <p className="text-background/80">Mon-Fri, 9am-6pm EST</p>
+                  <div className="p-8 rounded-2xl border border-accent/20 bg-ivory/5">
+                    <h3 className="font-display text-[clamp(1.5rem,2.5vw,2rem)] font-semibold tracking-[-0.01em] text-foreground mb-4">Contact</h3>
+                    <div className="space-y-4">
+                      <a
+                        href="mailto:hello@quintessence.com"
+                        className="inline-flex items-center gap-3 text-foreground/80 hover:text-foreground transition-colors"
+                      >
+                        hello@quintessence.com
+                      </a>
+                      <p className="text-foreground/60">We reply within one business day.</p>
                     </div>
                   </div>
                 </div>
