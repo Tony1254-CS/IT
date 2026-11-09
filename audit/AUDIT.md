@@ -120,3 +120,34 @@ Baseline commit `1c280c3` precedes this round. All edits are in `public/quintess
 | 10 | Code quality | 3 | **5** | One site now ships; dead components/data/deps remain. |
 
 **Round 1 overall: 5.7 → 6.7 / 10.** Round closed; next round attacks TBT/shader, form semantics, and dead code.
+
+## 7. Round 2 — 8 fixes applied (P1-4, P1-6, P2-1..3, P2-5, dead code)
+
+| Fix | Change | Verified |
+|---|---|---|
+| P1-4 | WebGL now sleeps off-screen (`scrollY>1.5×viewport` skips draw) + resolution cap `*0.55` → `*0.4`. | Lighthouse TBT **1,900 → 1,250 ms**, Perf **61 → 67**, CWV LCP 3,416 → 3,112 ms. |
+| P1-6 | Chips are real toggle buttons: `aria-pressed` set on create + kept in sync on click. | Markup carries `aria-pressed="false"`; click updates it. |
+| P2-1 | Footer outline stroke `rgba(...,0.2)` → `0.38`. | `r2-footer-1440.png` — wordmark legible, no heavier. |
+| P2-2 | Removed green “Available for new engagements” claim → factual “Independent studio, founded in Dhaka.” | Footer diff; no unverifiable availability. |
+| P2-3 | Manifesto ghost base `opacity .16` → `.28`. | Mid-scrub words readable; reveal still visible. |
+| P2-5 | `body{overflow-x:hidden}` → `overflow-x:clip`. | Zero overflow at 3 widths (probe re-run clean). |
+| Dead code | Deleted `components/`, `data/` (no imports remain — grep clean) and dropped `gsap`, `lenis`, `ogl`, `lucide-react` from `dependencies`. | `npm run build` ✅ 7 routes, `lint` ✅, `tsc` ✅. |
+
+**Round 2 evidence:** build ✅ · lint ✅ · tsc ✅ · Lighthouse **Perf 67 · A11y 95 · Best Practices 100 · SEO 100** · CLS **0.002** · LCP **3.0 s** · TBT **1,250 ms** · 0 console errors.
+
+### Round 2 scores (Round 1 → Round 2)
+
+| # | Category | R1 | R2 | Note |
+|---|---|---:|---:|---|
+| 1 | Premium feel | 7 | **7** | Held — less motion candy, same restraint. |
+| 2 | Typography | 7 | **7** | Held. |
+| 3 | Spacing & composition | 6 | **6** | Held — hero centered; mobile panel indent still open. |
+| 4 | Color & light | 8 | **8** | Held. |
+| 5 | Motion | 7 | **7** | Held — shader sleeps, wipe still present. |
+| 6 | Hero impact | 6 | **6** | Held. |
+| 7 | Copy | 8 | **8** | Held — no fake claims left. |
+| 8 | Responsiveness | 7 | **7** | Held. |
+| 9 | Performance & a11y | 6 | **7** | Perf +6, TBT −650 ms. A11y still 95. |
+| 10 | Code quality | 5 | **6** | Dead code gone; single-file monolith remains. |
+
+**Round 2 overall: 6.7 → 6.9 / 10.** One round remains (cap 3). Remaining P1/P2: font delivery, magnetic excess, mobile panel indent, palette focus return, dead `.dot` CSS, OG metadata.

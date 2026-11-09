@@ -15,7 +15,7 @@
 :root[data-theme="dark"]{--dk:#0B0B0C;--iv:#F2EEE6;--ch:#C8B28A}
 *,*::before,*::after{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{background:var(--dk);color:var(--iv);font:300 17px/1.65 'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--dk);color:var(--iv);font:300 17px/1.65 'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
 body.nogl{background:radial-gradient(120% 80% at 70% 20%,#26231d,#0B0B0C 60%)}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--ch);outline-offset:4px}
@@ -72,7 +72,7 @@ body.ready .h{opacity:1;transform:none}
 @keyframes cue{0%{transform:scaleX(0)}50%{transform:scaleX(1)}100%{transform:scaleX(1);opacity:0}}
 /* manifesto */
 #man{font-size:clamp(30px,5.3vw,82px);line-height:1.06;letter-spacing:-.015em;max-width:19em;margin-top:34px}
-.w{opacity:.16;transition:opacity .25s}
+.w{opacity:.28;transition:opacity .25s}
 /* capabilities */
 .rows{margin-top:clamp(48px,7vw,96px);border-bottom:1px solid rgba(242,238,230,.14)}
 .row{border-top:1px solid rgba(242,238,230,.14)}
@@ -161,7 +161,7 @@ form .acts{grid-column:1/-1;margin-top:4px}
 .fc .mono{margin-bottom:10px}
 /* footer */
 footer{padding:clamp(60px,9vw,120px) 0 40px;overflow:hidden}
-.big{font-size:clamp(54px,16.5vw,270px);line-height:.9;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px rgba(242,238,230,.2);white-space:nowrap;margin-bottom:48px}
+.big{font-size:clamp(54px,16.5vw,270px);line-height:.9;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px rgba(242,238,230,.38);white-space:nowrap;margin-bottom:48px}
 .fr{display:flex;flex-wrap:wrap;gap:16px 40px;justify-content:space-between;color:rgba(242,238,230,.6);font-size:14px}
 .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#7fcf9a;margin-right:9px;box-shadow:0 0 0 0 rgba(127,207,154,.6);animation:pu 2.4s infinite}
 @keyframes pu{70%{box-shadow:0 0 0 9px rgba(127,207,154,0)}100%{box-shadow:0 0 0 0 rgba(127,207,154,0)}}
@@ -270,7 +270,7 @@ footer{padding:clamp(60px,9vw,120px) 0 40px;overflow:hidden}
   <div class="wrap">
     <div class="big serif" aria-hidden="true">Quintessence</div>
     <div class="fc" id="fc"></div>
-    <div class="fr"><span><i class="dot"></i>Available for new engagements</span><span>Dhaka <span id="clk" class="mono" style="color:inherit;margin-left:8px">--:--:--</span></span><span>© 2026 Quintessence</span></div>
+    <div class="fr"><span>Independent studio, founded in Dhaka</span><span>Dhaka <span id="clk" class="mono" style="color:inherit;margin-left:8px">--:--:--</span></span><span>© 2026 Quintessence</span></div>
   </div>
 </footer>
 
@@ -313,10 +313,11 @@ gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,n
 const l=gl.getAttribLocation(pg,'a');gl.enableVertexAttribArray(l);gl.vertexAttribPointer(l,2,gl.FLOAT,false,0,0);
 const U=x=>gl.getUniformLocation(pg,x);
 let mx=.65,my=.55,tx=.65,ty=.55;
-const rs=()=>{const k=Math.min(devicePixelRatio||1,1.5)*.55;c.width=innerWidth*k|0;c.height=innerHeight*k|0;gl.viewport(0,0,c.width,c.height)};
+const rs=()=>{const k=Math.min(devicePixelRatio||1,1.5)*.4;c.width=innerWidth*k|0;c.height=innerHeight*k|0;gl.viewport(0,0,c.width,c.height)};
 rs();addEventListener('resize',rs);
 addEventListener('pointermove',e=>{tx=e.clientX/innerWidth;ty=1-e.clientY/innerHeight});
 const f=ms=>{mx+=(tx-mx)*.04;my+=(ty-my)*.04;
+if(scrollY>innerHeight*1.5){if(!rm)requestAnimationFrame(f);return}
 gl.uniform2f(U('r'),c.width,c.height);gl.uniform1f(U('t'),ms/1000);gl.uniform2f(U('m'),mx,my);gl.uniform1f(U('s'),scrollY);
 gl.drawArrays(gl.TRIANGLES,0,3);if(!rm)requestAnimationFrame(f)};
 requestAnimationFrame(f);
@@ -406,13 +407,13 @@ else if(on){if(e.key=='Escape')op(0);else if(e.key=='ArrowDown'){e.preventDefaul
 else if(e.key=='Escape')mo(0)});
 /* project brief builder */
 const S=new Set(),f=$('form'),d=document.createElement('div');
-d.className='f';d.innerHTML=`<span class="mono">What do you need</span><div class="chips">${P.map(p=>`<button type="button">${p.n}</button>`).join('')}</div>`;
+d.className='f';d.innerHTML=`<span class="mono">What do you need</span><div class="chips">${P.map(p=>`<button type="button" aria-pressed="false">${p.n}</button>`).join('')}</div>`;
 $('select[name=need]').closest('label').replaceWith(d);
 d.insertAdjacentHTML('afterend','<label class="f"><span class="mono">Timeline</span><select name="when"><option>Starting soon</option><option>Within 1 to 3 months</option><option>Within 3 to 6 months</option><option>Exploring options</option></select></label>');
 const v=n=>f.elements[n].value.trim();
 const brief=()=>`Project brief\nName: ${v('name')||'-'}\nEmail: ${v('email')||'-'}\nNeeds: ${[...S].join(', ')||'-'}\nTimeline: ${v('when')}\nDetails: ${v('msg')||'-'}`;
 const upd=()=>{const b=brief(),s=$('#sum');const dirty=/Name: (?!-)/.test(b)||/Email: [^-]/.test(b)||/Needs: [^-]/.test(b)||/Details: [^-]/.test(b);s.textContent=b;s.classList.toggle('show',dirty)};
-d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;b.classList.toggle('on');S.has(b.textContent)?S.delete(b.textContent):S.add(b.textContent);upd()});
+d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;b.classList.toggle('on');b.setAttribute('aria-pressed',b.classList.contains('on'));S.has(b.textContent)?S.delete(b.textContent):S.add(b.textContent);upd()});
 f.addEventListener('input',upd);upd();
 $('#cp').onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(brief());b.textContent='Copied'}catch(x){b.textContent='Select the text above'}setTimeout(()=>b.textContent='Copy brief',1800)};
 f.addEventListener('submit',e=>{e.preventDefault();const b=$('button',e.target);navigator.clipboard&&navigator.clipboard.writeText(brief());b.textContent='Brief copied — paste it into your email'});
