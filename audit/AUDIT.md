@@ -151,3 +151,49 @@ Baseline commit `1c280c3` precedes this round. All edits are in `public/quintess
 | 10 | Code quality | 5 | **6** | Dead code gone; single-file monolith remains. |
 
 **Round 2 overall: 6.7 → 6.9 / 10.** One round remains (cap 3). Remaining P1/P2: font delivery, magnetic excess, mobile panel indent, palette focus return, dead `.dot` CSS, OG metadata.
+
+## 8. Round 3 (final) — 7 fixes applied, 2 reverted mid-round
+
+| Fix | Change | Verified |
+|---|---|---|
+| Magnetic tamed | Pull factors `.22/.32` → `.12/.18`. | Hero hover still subtle; no jolt. |
+| Mobile panel indent | `@media(max-width:600px){.panel{margin-left:0}}`. | Capabilities panel flush on 375 px. |
+| Palette focus return | Closing palette refocuses `#sb`. | Esc/close returns focus to Menu. |
+| Dead CSS | Removed orphaned `.dot` + `@keyframes pu` (markup no longer uses them). | File shrinks; no visual change. |
+| Chips semantics | `role="group" aria-label="What do you need"` on consent chips. | Screen-reader grouping; Lighthouse a11y **95→96**. |
+| Hero balance | `h1{text-wrap:balance}` — stops the 375 px orphan break. | `r3-hero-1440.png` clean; mobile break even. |
+| OG metadata | Added `og:type`, `og:title`, `og:description`. | SEO stays **100**. |
+| ~~Font split (P1-5)~~ | **Reverted mid-round.** Splitting the Google Fonts URL into sync-serif + async rest raised FCP (CWV 452 → 668 ms). Rule: a fix that lowers a score is reverted. Fonts stay one blocking link. | CWV re-run after revert. |
+
+**Round 3 evidence:** build ✅ 7 routes · lint ✅ · tsc ✅ · Lighthouse **Perf 59 · A11y 96 · Best Practices 100 · SEO 100** · CLS **0.001** · LCP **3.3 s** · TBT **2,260 ms** (noisy — dev Turbopack + shader; CWV LCP 3,232 ms, FCP 572 ms, TTFB 54 ms) · 0 console/page errors (`r3-hero-1440.png`).
+
+### Round 3 scores (Round 2 → Round 3)
+
+| # | Category | R2 | R3 | Note |
+|---|---|---:|---:|---|
+| 1 | Premium feel | 7 | **7** | Held. |
+| 2 | Typography | 7 | **7** | Held. |
+| 3 | Spacing & composition | 6 | **7** | Mobile indent fixed. |
+| 4 | Color & light | 8 | **8** | Held. |
+| 5 | Motion | 7 | **7** | Held — magnetic restrained, wipe still present. |
+| 6 | Hero impact | 6 | **6** | Held — centered but the silk still does the talking. |
+| 7 | Copy | 8 | **8** | Held — nothing fake ships. |
+| 8 | Responsiveness | 7 | **7** | Held. |
+| 9 | Performance & a11y | 7 | **6** | Lighthouse Perf 67→59 / TBT 1,250→2,260 ms on this noisy host; CWV flat (±120 ms). Scored down — unsure means lower. A11y +1 (96). |
+| 10 | Code quality | 6 | **7** | Semantics + dead CSS pruned; still one 430-line file. |
+
+**Final overall: 5.7 → 7.0 / 10 after 3 rounds. STOP (round cap reached, 8.5 not reached).**
+
+## 9. Final report
+
+**Changed across 3 rounds (16 net fixes, each committed separately):** fake `.example` mailto + dual submit handlers replaced with copy-brief submit · nav legible over ivory sections · mobile Menu dropdown · reveal fallback so sections cannot stay blank · stale Next routes + `page.tsx.bak` deleted (now 7 routes) · hero vertically centered · preloader 1,900 → 800 ms · contact debug readout hidden until dirty · WebGL off-screen sleep + resolution cap · chips `aria-pressed` + group role · footer stroke strengthened · false availability claim replaced with a factual line · manifesto ghost raised · `overflow-x:clip` · dead `components/` `data/` + 4 unused deps + dead `.dot` CSS removed · magnetic tamed · mobile panel indent removed · palette focus return · OG metadata · hero `text-wrap:balance`.
+
+**Final scores:** Premium 7 · Typography 7 · Spacing 7 · Color 8 · Motion 7 · Hero 6 · Copy 8 · Responsive 7 · Perf/A11y 6 · Code 7 → **7.0 / 10**.
+
+**What still falls short and why:**
+- **Performance (6).** LH Perf oscillates 59–67 run-to-run on this dev host; the structural drags remain: one blocking Google Fonts link (async split proven worse here), a full-screen 5-octave FBM shader that — even sleeping off-screen — still compiles/recurses a `requestAnimationFrame` loop, and copy-ScriptEval main-thread work. Fixing it properly means self-hosted `@font-face` + shader pausing on `visibilitychange` + `content-visibility`, i.e. a structural change the 8-fix surgical budget could not cover without redesign.
+- **Hero impact (6).** Centered now, but the top half is still empty swirling silk with no editorial anchor (no work, no face, no proof). Adding substance would be a design-direction change; within the brief, this is the ceiling.
+- **Code quality (7).** Dead code is gone, but the served page is still one 430-line HTML file with content as JS string arrays — not typed data files, not a component tree. That is the architecture the user chose (“100% the same”); the audit cannot quietly rewrite it into Next.js without breaking the mandate.
+- **Template tells remain (see §3).** Accordion + 4-step ladder + pill clusters + glass cards + ⌘K will always read “agency template” to a Gucci-standard eye; only a bespoke editorial system kills them, which is direction change, not polish.
+
+No P0 or fake claim remains: build/lint/types clean, 0 console errors, zero overflow, CLS ≤0.003 all rounds, no reverted fix shipped.
