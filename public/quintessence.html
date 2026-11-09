@@ -175,7 +175,43 @@ footer{padding:clamp(60px,9vw,120px) 0 40px;overflow:hidden}
 .mag{will-change:transform}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-delay:0s!important;transition-delay:0s!important}html{scroll-behavior:auto}}
 </style>
-<noscript><style>.rv,.h,.w{opacity:1;transform:none}.ln>span{transform:none}#pre{display:none}</style></noscript>
+<style>
+/* concierge */
+.ccb{position:fixed;right:clamp(14px,2.4vw,30px);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:60;display:flex;align-items:center;gap:11px;padding:13px 18px 13px 15px;border-radius:999px;cursor:pointer;background:rgba(11,11,12,.85);border:1px solid rgba(255,255,255,.17);color:var(--iv);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);box-shadow:0 22px 60px -22px rgba(0,0,0,.75);transition:transform .5s cubic-bezier(.2,.7,.1,1)}
+.ccb:hover{transform:translateY(-3px)}
+.ccb .dot{width:7px;height:7px;border-radius:50%;background:var(--ch);animation:ccp 2.8s ease-out infinite}
+@keyframes ccp{0%{box-shadow:0 0 0 0 rgba(200,178,138,.45)}70%,100%{box-shadow:0 0 0 9px rgba(200,178,138,0)}}
+.ccb-t{font:400 11px/1 'Geist Mono',ui-monospace,monospace;letter-spacing:.24em;text-transform:uppercase}
+.ccv{position:fixed;right:clamp(14px,2.4vw,30px);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:61;width:min(400px,calc(100vw - 28px));height:min(620px,calc(100svh - 40px));display:flex;flex-direction:column;border-radius:26px;overflow:hidden;background:rgba(11,11,12,.92);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:0 34px 90px -26px rgba(0,0,0,.85);opacity:0;transform:translateY(14px) scale(.98);visibility:hidden;pointer-events:none;transition:opacity .45s,transform .55s cubic-bezier(.2,.7,.1,1),visibility 0s .55s}
+.ccv.on{opacity:1;transform:none;visibility:visible;pointer-events:auto;transition:opacity .45s,transform .55s cubic-bezier(.2,.7,.1,1),visibility 0s 0s}
+.cc-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px 13px;border-bottom:1px solid rgba(255,255,255,.09)}
+.cc-x{width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.2);border-radius:50%;background:none;color:rgba(242,238,230,.75);font:300 16px/1 'Hanken Grotesk',sans-serif;cursor:pointer;transition:.3s}
+.cc-x:hover{background:var(--iv);color:#111;border-color:var(--iv)}
+.cc-log{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px;display:grid;gap:12px;align-content:start;scrollbar-width:thin;scrollbar-color:rgba(200,178,138,.5) transparent}
+.cc-log::-webkit-scrollbar{width:4px}.cc-log::-webkit-scrollbar-thumb{background:rgba(200,178,138,.45);border-radius:99px}
+.cc-a{justify-self:start;max-width:91%;padding:12px 15px;border-radius:16px 16px 16px 5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);font:300 14.5px/1.55 'Hanken Grotesk',sans-serif;color:rgba(242,238,230,.92)}
+.cc-a a{border-bottom:1px solid rgba(200,178,138,.55);transition:color .3s}
+.cc-a a:hover{color:var(--ch)}
+.cc-u{justify-self:end;max-width:86%;padding:11px 15px;border-radius:16px 16px 5px 16px;background:rgba(200,178,138,.14);border:1px solid rgba(200,178,138,.36);font:300 14.5px/1.5 'Hanken Grotesk',sans-serif;color:var(--iv)}
+.cc-ty{justify-self:start;display:flex;gap:5px;padding:14px 15px;border-radius:16px 16px 16px 5px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07)}
+.cc-ty span{width:5px;height:5px;border-radius:50%;background:var(--ch);opacity:.5;animation:cct 1.2s ease-in-out infinite}
+.cc-ty span:nth-child(2){animation-delay:.15s}.cc-ty span:nth-child(3){animation-delay:.3s}
+@keyframes cct{0%,100%{opacity:.5;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.cc-chips{display:flex;gap:8px;padding:2px 18px 12px;overflow-x:auto;scrollbar-width:none}
+.cc-chips::-webkit-scrollbar{display:none}
+.cc-chips button{flex:none;font:400 10.5px/1 'Geist Mono',ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;padding:10px 13px;border-radius:99px;border:1px solid rgba(200,178,138,.35);background:none;color:var(--ch);cursor:pointer;transition:.3s}
+.cc-chips button:hover{background:var(--ch);color:#111}
+.cc-f{display:flex;gap:10px;padding:13px 16px 15px;border-top:1px solid rgba(255,255,255,.09)}
+.cc-f input{flex:1;min-width:0;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.22);color:var(--iv);font:300 16px 'Hanken Grotesk',sans-serif;padding:9px 2px;border-radius:0;transition:border-color .3s}
+.cc-f input:focus{outline:0;border-color:var(--ch)}
+.cc-f input::placeholder{color:rgba(242,238,230,.4)}
+.cc-s{flex:none;width:38px;height:38px;border-radius:50%;border:1px solid rgba(242,238,230,.28);background:none;color:var(--iv);cursor:pointer;display:grid;place-items:center;transition:.3s}
+.cc-s:hover{background:var(--iv);color:#111;border-color:var(--iv)}
+.cc-s:disabled{opacity:.35;cursor:default}
+@media(max-width:560px){.ccb{right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)}.ccv{left:14px;right:14px;width:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);height:min(560px,calc(100svh - 60px))}}
+@media(prefers-reduced-motion:reduce){.ccb,.ccv{transition:none}.ccb .dot,.cc-ty span{animation:none}}
+</style>
+<noscript><style>.rv,.h,.w{opacity:1;transform:none}.ln>span{transform:none}#pre{display:none}.ccb{display:none}</style></noscript>
 </head>
 <body>
 <div id="pre" aria-hidden="true"><div class="wm serif"></div></div>
@@ -275,6 +311,23 @@ footer{padding:clamp(60px,9vw,120px) 0 40px;overflow:hidden}
     <div class="fr"><span>Independent studio, founded in Dhaka</span><span>Dhaka <span id="clk" class="mono" style="color:inherit;margin-left:8px">--:--:--</span></span><span>© 2026 Quintessence</span></div>
   </div>
 </footer>
+
+<!-- concierge -->
+<button class="ccb" id="ccb" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="ccv">
+  <span class="dot" aria-hidden="true"></span><span class="ccb-t">Concierge</span>
+</button>
+<div class="ccv" id="ccv" role="dialog" aria-label="Concierge — ask about the studio">
+  <div class="cc-h">
+    <span style="display:flex;align-items:center;gap:10px;min-width:0"><span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:var(--ch);flex:none"></span><span class="ccb-t">Concierge</span></span>
+    <button class="cc-x" id="ccx" type="button" aria-label="Close concierge">×</button>
+  </div>
+  <div class="cc-log" id="cclog" role="log" aria-label="Conversation with the concierge"></div>
+  <div class="cc-chips" id="cchips" aria-label="Suggested questions"></div>
+  <form class="cc-f" id="ccf">
+    <input id="ccin" type="text" inputmode="text" autocomplete="off" placeholder="Ask about the studio…" aria-label="Type a question for the concierge">
+    <button class="cc-s" id="ccsend" type="submit" aria-label="Send message">→</button>
+  </form>
+</div>
 
 <script>
 (()=>{
@@ -419,6 +472,65 @@ d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;b
 f.addEventListener('input',upd);upd();
 $('#cp').onclick=async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText(brief());b.textContent='Copied'}catch(x){b.textContent='Select the text above'}setTimeout(()=>b.textContent='Copy brief',1800)};
 f.addEventListener('submit',e=>{e.preventDefault();const b=$('button',e.target);navigator.clipboard&&navigator.clipboard.writeText(brief());b.textContent='Brief copied — paste it into your email'});
+})();
+</script>
+<script>
+(()=>{ /* concierge brain — isolated: shares no variables with the site script */
+const $=s=>document.querySelector(s),pill=$('#ccb'),view=$('#ccv'),log=$('#cclog'),chips=$('#cchips'),form=$('#ccf'),inp=$('#ccin'),x=$('#ccx');
+if(!pill||!view)return;
+const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const addU=t=>{const d=document.createElement('div');d.className='cc-u';d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight};
+const addB=h=>{const d=document.createElement('div');d.className='cc-a';d.innerHTML=h;log.appendChild(d);log.scrollTop=log.scrollHeight};
+/* typing dots first, honest bubble second */
+const say=h=>{const t=document.createElement('div');t.className='cc-ty';t.setAttribute('aria-hidden','true');t.innerHTML='<span></span><span></span><span></span>';log.appendChild(t);log.scrollTop=log.scrollHeight;const wait=rm?0:Math.min(1150,420+h.length*2.6);setTimeout(()=>{t.remove();addB(h)},wait)};
+const open=()=>{view.classList.add('on');pill.setAttribute('aria-expanded','true');if(!log.children.length)setTimeout(()=>say(HELLO),120);setTimeout(()=>inp.focus(),rm?60:360)};
+const close=()=>{view.classList.remove('on');pill.setAttribute('aria-expanded','false');pill.focus()};
+pill.addEventListener('click',()=>view.classList.contains('on')?close():open());
+x.addEventListener('click',close);
+addEventListener('keydown',e=>{if(view.classList.contains('on')&&e.key=='Escape'){e.preventDefault();close()}});
+/* corpus — every claim below is stated on this site itself */
+const S=[
+{id:'software',n:'Software Engineering',l:'Web platforms, mobile apps and APIs built to be maintained for years, not demoed once.',k:['software','web','platform','mobile app','android','ios','iphone','flutter','react native','cross platform','saas','api','backend','frontend','website','dashboard','portal','crm','erp','pos','inventory','booking','lms','learning management','moderniz','legacy','refactor','database','app store','performance','product']},
+{id:'ai',n:'Applied AI',l:'Agents, retrieval and models that do one defined job well, with Bangla language as a first-class capability.',k:['ai','agents','agent','llm','rag','chatbot','chat bot','machine learning','ml','deep learning','vision','ocr','bangla','nlp','speech','voice agent','fine tune','fine-tune','recommend','forecast','anomaly','copilot','workflow automation','guardrail','retrieval']},
+{id:'security',n:'Cybersecurity',l:'We test it, harden it and watch it. Always under written authorization and an agreed scope.',k:['security','cyber','pentest','pen test','penetration','hacking','hacker','vulnerab','code review','siem','incident response','forensic','compliance','pci','soc2','soc 2','iso 27001','gdpr','mfa','zero trust','encrypt','breach','phish','malware','hardening','sidm']},
+{id:'cloud',n:'Cloud & Infrastructure',l:'Architecture that scales without drama and stays observable when it matters.',k:['cloud','aws','azure','google cloud','gcp','devops','kubernetes','docker','hosting','migrat','backup','disaster recovery','observab','infrastructure','infra','deploy','scaling','cdn','monitoring','ci/cd','pipeline']},
+{id:'design',n:'Design & Brand',l:'Interfaces and identities made with restraint, so the product does the talking.',k:['design','brand','logo','identity','ui','ux','user interface','user experience','figma','motion','video','3d','typography','product design']},
+{id:'growth',n:'Growth',l:'Search, content and analytics tied to outcomes you can measure.',k:['growth','seo','marketing','analytics','conversion','ads','content','social','funnel','campaign','traffic','keyword','core web vitals','lighthouse']}];
+const HELLO='<p>Welcome. This concierge answers strictly from this site — its six capabilities, its way of working, and the commitments behind both. Ask anything on those lines.</p>';
+const svcAnswer=s=>'<p>'+s.l+'</p><p><a href="#'+s.id+'">Full capability list →</a></p>';
+const ALL_A='<p>One studio, six capabilities: '+S.map(x=>'<a href="#'+x.id+'">'+x.n+'</a>').join(' · ')+' — applied across industries, education to manufacturing. Which line of work interests you?</p>';
+const START='<p>The route that never misfires: the brief form at <a href="#contact">Contact →</a>. Name, what you need, timeline — the page hands you a copy-ready brief to send from your own inbox.</p>';
+const PROC_A='<p>Four steps, scoped in writing: <strong>Discover</strong> — we listen first and write down what success means. <strong>Define</strong> — scope, price and timeline in a written statement of work. <strong>Build</strong> — small releases, tested and documented as we go. <strong>Sustain</strong> — monitoring, support and a clean handover. <a href="#approach">The approach, in full →</a></p>';
+const TRUST_A='<p>Six commitments, kept whether or not anyone is looking: <strong>written scope</strong> · <strong>least-privilege access</strong> · <strong>authorized testing only</strong> — never without documented permission · <strong>rights-cleared AI</strong> · <strong>clear ownership</strong> of code and data · <strong>honest claims</strong> — no certifications or outcomes we cannot evidence. <a href="#trust">Read them →</a></p>';
+const ENG_A='<p>No public price list — quoting before scope is written is guessing, and none is done here. Three ways to work: <strong>Project</strong> — a defined scope, price and timeline · <strong>Retainer</strong> — an ongoing team for maintenance, security and growth · <strong>Advisory</strong> — strategy, architecture and readiness reviews before you commit. <a href="#about">Ways to work →</a></p>';
+const ABOUT_A='<p>Independently owned, founder-led, based in Dhaka. A focused core team leads every engagement, with vetted specialists where a project needs them. Bangladesh first; international work selectively. <a href="#about">About the studio →</a></p>';
+const THX_A='<p>Anytime. A person reads the brief form at <a href="#contact">Contact →</a> — no bot sits between you and the studio.</p>';
+const FALL_A='<p>Scripted by design — this concierge knows what the site states and nothing it does not. Try: what we do · how projects start · engagement models · commitments · where the studio is based. Beyond that, <a href="#contact">the brief form →</a> reaches a person.</p>';
+/* intent engine — plain text matching; runs locally, no network, nothing stored */
+const norm=q=>q.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
+const hit=(q,k)=>new RegExp('\\b'+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?:es|s)?\\b').test(q);
+const reply=q=>{
+  q=norm(q); if(!q)return FALL_A;
+  if(q.length<28&&/^(hi|hey|hello|salam|assalam|good (morning|afternoon|evening|day))\b/.test(q))return HELLO;
+  if(q.length<40&&hit(q,'thank'))return THX_A;
+  if(hit(q,'contact')||hit(q,'email')||hit(q,'phone number')||hit(q,'reach you')||hit(q,'get in touch')||hit(q,'speak')||hit(q,'talk to')||hit(q,'touch base'))return START;
+  if(hit(q,'trust')||hit(q,'commit')||hit(q,'commitment')||hit(q,'promise')||hit(q,'guarantee')||hit(q,'nda')||hit(q,'privacy')||hit(q,'confidential')||hit(q,'ownership')||hit(q,'own the')||hit(q,'license')||hit(q,'intellectual'))return TRUST_A;
+  if(hit(q,'cost')||hit(q,'price')||hit(q,'budget')||hit(q,'how much')||hit(q,'rate')||hit(q,'quote')||hit(q,'quotation')||hit(q,'engagement')||hit(q,'payment')||hit(q,'fee')||hit(q,'hire')||hit(q,'retainer')||hit(q,'advisory')||hit(q,'estimate'))return ENG_A;
+  if(hit(q,'start')||hit(q,'begin')||hit(q,'process')||hit(q,'approach')||hit(q,'step')||hit(q,'timeline')||hit(q,'discover')||hit(q,'define')||hit(q,'onboard')||hit(q,'phase')||hit(q,'how do you work')||hit(q,'how does it work')||hit(q,'how it works')||hit(q,'statement of work'))return PROC_A;
+  const sc=S.map(s=>[s,s.k.reduce((n,k)=>n+(hit(q,k)?1:0),0)]).sort((a,b)=>b[1]-a[1]);
+  if(sc[0][1]>0)return svcAnswer(sc[0][0]);
+  if(hit(q,'where')||hit(q,'based')||hit(q,'dhaka')||hit(q,'bangladesh')||hit(q,'located')||hit(q,'location')||hit(q,'office')||hit(q,'founder')||hit(q,'who are you')||hit(q,'about')||hit(q,'your team')||hit(q,'your company')||hit(q,'people'))return ABOUT_A;
+  if(hit(q,'services')||hit(q,'do you do')||hit(q,'capability')||hit(q,'capabilities')||hit(q,'offer')||hit(q,'everything')||hit(q,'all you'))return ALL_A;
+  return FALL_A;
+};
+/* chips — the five questions the site can genuinely answer */
+[['What do you do'],['How projects start'],['Engagement & pricing'],['Security commitments'],['Where you are based']].forEach(t=>{
+  const b=document.createElement('button');b.type='button';b.textContent=t[0];chips.appendChild(b);
+  b.addEventListener('click',()=>{addU(t[0]);say(reply(t[0]))});
+});
+/* any in-chat section link navigates the page and folds the panel away */
+log.addEventListener('click',e=>{if(e.target.closest('a'))setTimeout(close,rm?0:400)});
+form.addEventListener('submit',e=>{e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';addU(v);say(reply(v))});
 })();
 </script>
 </body>
